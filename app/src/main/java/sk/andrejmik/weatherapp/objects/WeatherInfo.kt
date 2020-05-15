@@ -1,6 +1,8 @@
 package sk.andrejmik.weatherapp.objects
 
 import com.google.gson.annotations.SerializedName
+import java.text.SimpleDateFormat
+import java.util.*
 
 open class WeatherInfo : BaseObject()
 {
@@ -42,4 +44,10 @@ open class WeatherInfo : BaseObject()
 
     @SerializedName("clouds")
     lateinit var clouds: Clouds
+
+    fun getDateTimeFormatted(): String
+    {
+        val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
+        return formatter.format(Date(dateTime * 1000))
+    }
 }

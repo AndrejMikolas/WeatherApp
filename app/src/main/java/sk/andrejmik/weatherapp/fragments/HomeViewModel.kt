@@ -17,9 +17,15 @@ class HomeViewModel : ViewModel()
         MutableLiveData<WeatherInfo>()
     }
 
+    fun getWeatherInfo(): LiveData<WeatherInfo>
+    {
+        return weatherInfo
+    }
+
     fun loadWeatherInfo(cityName: String)
     {
-        weatherInfoRepository.get(cityName).subscribeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread()).subscribe(this::next, this::error, this::complete)
+        weatherInfoRepository.get(cityName).subscribeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe(this::next, this::error, this::complete)
     }
 
     private fun next(loadedWeatherInfo: WeatherInfo)
