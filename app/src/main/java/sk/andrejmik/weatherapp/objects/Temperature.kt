@@ -2,7 +2,7 @@ package sk.andrejmik.weatherapp.objects
 
 import com.google.gson.annotations.SerializedName
 
-open class Temperature
+open class Temperature : BaseObject()
 {
     @SerializedName("temp")
     var currentTemp: Double = 0.0
