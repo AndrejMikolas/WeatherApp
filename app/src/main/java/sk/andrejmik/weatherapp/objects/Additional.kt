@@ -1,6 +1,8 @@
 package sk.andrejmik.weatherapp.objects
 
 import com.google.gson.annotations.SerializedName
+import java.text.SimpleDateFormat
+import java.util.*
 
 open class Additional : BaseObject()
 {
@@ -21,4 +23,16 @@ open class Additional : BaseObject()
 
     @SerializedName("country")
     var countryCode: String = ""
+
+    fun getSunriseFormatted(): String
+    {
+        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault());
+        return formatter.format(Date(sunrise * 1000))
+    }
+
+    fun getSunsetFormatted(): String
+    {
+        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault());
+        return formatter.format(Date(sunset * 1000))
+    }
 }
