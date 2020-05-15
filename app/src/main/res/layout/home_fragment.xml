@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="weatherInfo"
             type="sk.andrejmik.weatherapp.objects.WeatherInfo" />
@@ -18,7 +19,8 @@
         <SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_containter"
@@ -45,9 +47,13 @@
 
                 <ImageView
                     android:id="@+id/imageView_wea_icon"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/weather_icon_description"
+                    android:scaleType="fitCenter"
                     app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline"
                     app:layout_constraintStart_toStartOf="@+id/guideline6"
                     app:layout_constraintTop_toTopOf="@+id/guideline7"
                     tools:src="@tools:sample/avatars" />
@@ -84,24 +90,26 @@
                     android:id="@+id/textView_city_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:text="@{weatherInfo.cityName}"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView_last_updated"
                     app:layout_constraintEnd_toStartOf="@+id/guideline5"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/imageView_wea_icon"
-                    app:layout_constraintTop_toTopOf="@id/guideline7" />
+                    app:layout_constraintStart_toEndOf="@id/guideline"
+                    app:layout_constraintTop_toTopOf="@id/guideline7"
+                    tools:text="city name" />
 
                 <TextView
                     android:id="@+id/textView_last_updated"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:text="@{@string/updated_date_format(weatherInfo.dateTime)}"
                     app:layout_constraintBottom_toTopOf="@id/guideline4"
                     app:layout_constraintEnd_toStartOf="@+id/guideline5"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/imageView_wea_icon"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_city_name" />
+                    app:layout_constraintStart_toEndOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_city_name"
+                    tools:text="last updated" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline9"
@@ -114,52 +122,65 @@
                     android:id="@+id/textView_temp_current"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textSize="36sp"
+                    android:text="@{@string/temp_current_bind(weatherInfo.temperature.currentTemp)}"
+                    android:textSize="52sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/textView_temp_feel"
                     app:layout_constraintEnd_toStartOf="@+id/guideline9"
                     app:layout_constraintStart_toStartOf="@+id/guideline6"
-                    app:layout_constraintTop_toBottomOf="@id/guideline4" />
+                    app:layout_constraintTop_toBottomOf="@id/guideline4"
+                    tools:text="current temp" />
 
                 <TextView
                     android:id="@+id/textView_temp_feel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:text="@{@string/temp_feels_like_bind(weatherInfo.temperature.feelTemp)}"
                     app:layout_constraintBottom_toBottomOf="@id/guideline2"
                     app:layout_constraintEnd_toStartOf="@+id/guideline9"
                     app:layout_constraintStart_toStartOf="@+id/guideline6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_temp_current" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView_temp_current"
+                    tools:text="feel temp" />
 
                 <TextView
                     android:id="@+id/textView_weat_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:text="@{weatherInfo.weather.get(0).main}"
                     app:layout_constraintBottom_toTopOf="@+id/textView_weat_desc"
                     app:layout_constraintEnd_toStartOf="@+id/guideline5"
                     app:layout_constraintStart_toStartOf="@+id/guideline9"
-                    app:layout_constraintTop_toBottomOf="@id/guideline4" />
+                    app:layout_constraintTop_toBottomOf="@id/guideline4"
+                    tools:text="main" />
 
                 <TextView
                     android:id="@+id/textView_weat_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:text="@{weatherInfo.weather.get(0).description}"
                     app:layout_constraintBottom_toTopOf="@+id/textView_clouds"
                     app:layout_constraintEnd_toStartOf="@+id/guideline5"
                     app:layout_constraintStart_toStartOf="@+id/guideline9"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_weat_main" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView_weat_main"
+                    tools:text="desc" />
 
                 <TextView
                     android:id="@+id/textView_clouds"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:text="@{@string/cloudiness_bind(weatherInfo.clouds.all)}"
                     app:layout_constraintBottom_toBottomOf="@id/guideline2"
                     app:layout_constraintEnd_toStartOf="@+id/guideline5"
                     app:layout_constraintStart_toStartOf="@+id/guideline9"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_weat_desc" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView_weat_desc"
+                    tools:text="clouds" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.33" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
