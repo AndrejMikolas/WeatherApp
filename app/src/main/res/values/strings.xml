@@ -11,4 +11,5 @@
     <string name="pressure_bind">%1$d hPa</string>
     <string name="humidity_bind">%1$d %%</string>
     <string name="wind_bind">%1$.1f m/s  %2$d°</string>
+    <string name="updated">Updated</string>
 </resources>
