@@ -31,6 +31,7 @@ class HomeFragment : Fragment()
     {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        viewModel.loadWeatherInfo("Zilina")
         // TODO: Use the ViewModel
     }
 
