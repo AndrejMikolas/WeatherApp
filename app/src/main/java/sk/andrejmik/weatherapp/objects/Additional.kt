@@ -14,10 +14,10 @@ open class Additional : BaseObject()
     var message: Double = 0.0
 
     @SerializedName("sunrise")
-    var sunrise: Double = 0.0
+    var sunrise: Long = 0
 
     @SerializedName("sunset")
-    var sunset: Double = 0.0
+    var sunset: Long = 0
 
     @SerializedName("country")
     var countryCode: String = ""

@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.*
-import org.json.JSONObject
 import sk.andrejmik.weatherapp.objects.WeatherInfo
 import sk.andrejmik.weatherapp.repository_interface.IWeatherInfoRepository
 import java.io.IOException
@@ -15,7 +14,7 @@ open class APIWeatherInfoRepository : IWeatherInfoRepository
 {
     override fun get(@NonNull cityName: String): Observable<WeatherInfo>
     {
-        val requestUrl: String = APIConstants.weatherApiUrl.plus("?q=$cityName")
+        val requestUrl: String = APIConstants.weatherApiUrl.plus("&q=$cityName")
         val client = OkHttpClient()
         val request = Request.Builder().url(requestUrl).get().build()
 
@@ -32,9 +31,8 @@ open class APIWeatherInfoRepository : IWeatherInfoRepository
                     if (response.isSuccessful)
                     {
                         val jsonBody = response.body?.string()
-                        val jObject = JSONObject(jsonBody).getJSONObject("data")
                         val result = Gson().fromJson<WeatherInfo>(
-                            jObject.toString(),
+                            jsonBody.toString(),
                             WeatherInfo::class.java
                         )
                         emitter.onNext(result)

@@ -26,7 +26,7 @@ open class WeatherInfo : BaseObject()
     lateinit var coordinates: Coordinates
 
     @SerializedName("weather")
-    lateinit var weather: Weather
+    lateinit var weather: List<Weather>
 
     @SerializedName("base")
     lateinit var base: String
