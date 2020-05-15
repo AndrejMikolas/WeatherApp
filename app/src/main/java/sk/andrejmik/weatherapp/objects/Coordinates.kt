@@ -2,7 +2,7 @@ package sk.andrejmik.weatherapp.objects
 
 import com.google.gson.annotations.SerializedName
 
-open class Coordinates
+open class Coordinates : BaseObject()
 {
     @SerializedName("lon")
     var longitude: Double = 0.0
