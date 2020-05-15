@@ -118,10 +118,11 @@
     </codeStyleSettings>
     <codeStyleSettings language="kotlin">
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
+      <option name="RIGHT_MARGIN" value="150" />
       <option name="arrangementSettings" />
       <option name="forceArrangeMenuAvailable" value="false" />
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
-      <option name="RIGHT_MARGIN" value="-1" />
+      <option name="RIGHT_MARGIN" value="150" />
       <option name="LINE_COMMENT_AT_FIRST_COLUMN" value="true" />
       <option name="BLOCK_COMMENT_AT_FIRST_COLUMN" value="true" />
       <option name="LINE_COMMENT_ADD_SPACE" value="false" />
