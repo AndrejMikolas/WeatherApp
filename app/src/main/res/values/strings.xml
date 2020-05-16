@@ -12,4 +12,8 @@
     <string name="humidity_bind">%1$d %%</string>
     <string name="wind_bind">%1$.1f m/s  %2$d°</string>
     <string name="updated">Updated</string>
+    <string name="city_not_found">City not found</string>
+    <string name="network_error">Network error</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="retry">Retry</string>
 </resources>

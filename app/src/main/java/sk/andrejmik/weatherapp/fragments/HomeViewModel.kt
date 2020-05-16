@@ -20,14 +20,20 @@ class HomeViewModel : ViewModel()
         MutableLiveData<WeatherInfo>()
     }
     val onEvent = MutableLiveData<Event<LoadEvent>>()
+    private val searchStringLiveData = MutableLiveData<String>("")
 
+    fun searchChanged(cityName: String)
+    {
+        searchStringLiveData.value = cityName
+        loadWeatherInfo()
+    }
 
     fun getWeatherInfo(): LiveData<WeatherInfo>
     {
         return weatherInfo
     }
 
-    fun loadWeatherInfo(cityName: String)
+    fun loadWeatherInfo()
     {
         onEvent.postValue(Event(LoadEvent.STARTED))
         if (!NetworkHelper.verifyAvailableNetwork())
@@ -35,27 +41,32 @@ class HomeViewModel : ViewModel()
             onEvent.postValue(Event(LoadEvent.NETWORK_ERROR))
             return
         }
-        if (cityName.isEmpty())
+        if (searchStringLiveData.value?.isEmpty()!!)
         {
-            onEvent.postValue(Event(LoadEvent.UNKNOWN_ERROR))
+            onEvent.postValue(Event(LoadEvent.NOT_FOUND))
             return
         }
-        weatherInfoRepository.get(cityName).subscribeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe(this::next, this::error, this::complete)
+        weatherInfoRepository.get(searchStringLiveData.value!!).subscribeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe(this::onNext, this::onError, this::onComplete)
     }
 
-    private fun next(loadedWeatherInfo: WeatherInfo)
+    private fun onNext(loadedWeatherInfo: WeatherInfo)
     {
         weatherInfo.postValue(loadedWeatherInfo)
     }
 
-    private fun complete()
+    private fun onComplete()
     {
         onEvent.postValue(Event(LoadEvent.COMPLETE))
     }
 
-    private fun error(t: Throwable)
+    private fun onError(t: Throwable)
     {
+        if (t.message.equals("404"))
+        {
+            onEvent.postValue(Event(LoadEvent.NOT_FOUND))
+            return
+        }
         onEvent.postValue(Event(LoadEvent.UNKNOWN_ERROR))
     }
 }
