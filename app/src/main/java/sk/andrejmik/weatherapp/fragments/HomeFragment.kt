@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -31,8 +33,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
     private val weatherInfoLoadedObserver = Observer<WeatherInfo> { weatherInfo ->
         weatherInfo?.let {
             binding.weatherInfo = weatherInfo
-            var url: String = "https://openweathermap.org/img/wn/${weatherInfo.weather[0].icon}@2x.png"
-            Picasso.with(context).load(url).into(binding.imageViewWeaIcon)
+            Picasso.with(context).load("https://openweathermap.org/img/wn/${weatherInfo.weather[0].icon}@2x.png").into(binding.imageViewWeaIcon)
         }
     }
 
@@ -85,13 +86,60 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
     override fun onActivityCreated(savedInstanceState: Bundle?)
     {
         super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         swipe_container.setOnRefreshListener(this)
-        prepareObservers()
+        setupObservers()
+        setupViews()
+        setupListeners()
         loadWeather()
     }
 
-    private fun prepareObservers()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        super.onViewCreated(view, savedInstanceState)
+        val activity = (requireActivity() as AppCompatActivity)
+        activity.setSupportActionBar(bottom_bar)
+    }
+
+    private fun setupViews()
+    {
+        searchview_city.setIconifiedByDefault(true)
+        searchview_city.isFocusable = true
+    }
+
+    //@SuppressLint("RestrictedApi")
+    private fun setupListeners()
+    {
+        fab_search.setOnClickListener {
+            searchview_city.visibility = View.VISIBLE
+            searchview_city.isIconified = false
+            fab_search.visibility = View.GONE
+        }
+        searchview_city.setOnCloseListener {
+            fab_search.visibility = View.VISIBLE
+            searchview_city.visibility = View.GONE
+            true
+        }
+        searchview_city.setOnQueryTextListener(object : SearchView.OnQueryTextListener
+        {
+            override fun onQueryTextSubmit(query: String?): Boolean
+            {
+                fab_search.visibility = View.VISIBLE
+                searchview_city.visibility = View.GONE
+                return false
+                //TODO("Not yet implemented")
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean
+            {
+                return false
+                //TODO("Not yet implemented")
+            }
+        })
+    }
+
+    private fun setupObservers()
     {
         viewModel.getWeatherInfo().observe(viewLifecycleOwner, weatherInfoLoadedObserver)
         viewModel.onEvent.observe(viewLifecycleOwner, eventObserver)

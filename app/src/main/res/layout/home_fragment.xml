@@ -1,371 +1,400 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout>
 
     <data>
 
         <variable
             name="weatherInfo"
             type="sk.andrejmik.weatherapp.objects.WeatherInfo" />
-
     </data>
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:context=".fragments.HomeFragment">
 
-        <SearchView
-            android:id="@+id/searchView"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchview_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone"
+            app:iconifiedByDefault="true" />
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_container"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.45690835" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.15" />
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.45690835" />
 
-                <ImageView
-                    android:id="@+id/imageView_wea_icon"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/weather_icon_description"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline4"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline_icon_width"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_left"
-                    app:layout_constraintTop_toTopOf="@+id/guideline_top"
-                    tools:src="@tools:sample/avatars" />
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.15" />
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_end="16dp" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_begin="16dp" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_top"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="16dp" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_end="16dp" />
-
-                <TextView
-                    android:id="@+id/textView_city_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{weatherInfo.cityName}"
-                    android:textColor="@android:color/black"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView_last_updated"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@id/guideline_icon_width"
-                    app:layout_constraintTop_toTopOf="@id/guideline_top"
-                    tools:text="city name" />
-
-                <TextView
-                    android:id="@+id/textView_last_updated"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{weatherInfo.getDateTimeFormatted}"
-                    android:textColor="@android:color/black"
-                    app:layout_constraintBottom_toTopOf="@id/guideline4"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@id/guideline_icon_width"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_city_name"
-                    tools:text="last updated" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.5" />
-
-                <TextView
-                    android:id="@+id/textView_temp_current"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/temp_current_bind(weatherInfo.temperature.currentTemp)}"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="52sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/textView_temp_feel"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline9"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_left"
-                    app:layout_constraintTop_toBottomOf="@id/guideline_info_top"
-                    tools:text="temp" />
-
-                <TextView
-                    android:id="@+id/textView_temp_feel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/temp_feels_like_bind(weatherInfo.temperature.feelTemp)}"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView_temp_min"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline9"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_left"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_temp_current"
-                    tools:text="feel temp" />
-
-                <TextView
-                    android:id="@+id/textView_weat_main"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{weatherInfo.weather.get(0).main}"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView_weat_desc"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                    app:layout_constraintStart_toStartOf="@id/guideline3"
-                    app:layout_constraintTop_toBottomOf="@id/guideline_info_top"
-                    tools:text="main" />
-
-                <TextView
-                    android:id="@+id/textView_weat_desc"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{weatherInfo.weather.get(0).description}"
-                    android:textColor="@android:color/black"
-                    app:layout_constraintBottom_toTopOf="@+id/textView_clouds"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                    app:layout_constraintStart_toStartOf="@id/guideline3"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_weat_main"
-                    tools:text="desc" />
-
-                <TextView
-                    android:id="@+id/textView_clouds"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/cloudiness_bind(weatherInfo.clouds.all)}"
-                    android:textColor="@android:color/black"
-                    app:layout_constraintBottom_toTopOf="@+id/textView_sunrise"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                    app:layout_constraintStart_toStartOf="@id/guideline3"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_weat_desc"
-                    tools:text="clouds" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_icon_width"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.33" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.6" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_info_top"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.2" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_info_bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.40629274" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.6" />
-
-                <LinearLayout
-                    android:id="@+id/linearLayout4"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:orientation="vertical"
-                    android:padding="8dp"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline8"
-                    app:layout_constraintEnd_toStartOf="@+id/linearLayout5"
-                    app:layout_constraintStart_toStartOf="@id/guideline_left"
-                    app:layout_constraintTop_toTopOf="@+id/guideline2">
-
-                    <TextView
-                        android:id="@+id/textView_wind_title"
-                        style="@style/weat_info_item_title"
-                        android:layout_width="match_parent"
-                        android:drawableStart="@drawable/weather_windy"
-                        android:gravity="center_vertical"
-                        android:text="@string/wind" />
-
-                    <TextView
-                        android:id="@+id/textView_wind_value"
-                        style="@style/weat_info_item_value"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/imageView_wea_icon"
+                        android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_weight="2"
-                        android:text="@{@string/wind_bind(weatherInfo.wind.speed, weatherInfo.wind.degree)}"
-                        android:textAlignment="center"
-                        tools:text="wind" />
-                </LinearLayout>
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/weather_icon_description"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_icon_width"
+                        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                        app:layout_constraintTop_toTopOf="@+id/guideline_top"
+                        tools:src="@tools:sample/avatars" />
 
-                <LinearLayout
-                    android:id="@+id/linearLayout5"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:orientation="vertical"
-                    android:padding="8dp"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline8"
-                    app:layout_constraintEnd_toStartOf="@+id/linearLayout6"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout4"
-                    app:layout_constraintTop_toTopOf="@+id/guideline2">
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_end="16dp" />
 
-                    <TextView
-                        android:id="@+id/textView_pressure_title"
-                        style="@style/weat_info_item_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/arrow_collapse_down"
-                        android:text="@string/pressure" />
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="16dp" />
 
-                    <TextView
-                        android:id="@+id/textView_pressure_value"
-                        style="@style/weat_info_item_value"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="2"
-                        android:text="@{@string/pressure_bind(weatherInfo.temperature.pressure)}"
-                        tools:text="pressure" />
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_begin="16dp" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout6"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:orientation="vertical"
-                    android:padding="8dp"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline8"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_right"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout5"
-                    app:layout_constraintTop_toTopOf="@+id/guideline2">
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_end="16dp" />
 
                     <TextView
-                        android:id="@+id/textView_humidity_title"
-                        style="@style/weat_info_item_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/water_percent"
-                        android:text="@string/humidity" />
+                        android:id="@+id/textView_city_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{weatherInfo.cityName}"
+                        android:textColor="@android:color/black"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toTopOf="@+id/textView_last_updated"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@id/guideline_icon_width"
+                        app:layout_constraintTop_toTopOf="@id/guideline_top"
+                        tools:text="city name" />
 
                     <TextView
-                        android:id="@+id/textView_humidity_value"
-                        style="@style/weat_info_item_value"
-                        android:layout_width="match_parent"
+                        android:id="@+id/textView_last_updated"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{weatherInfo.getDateTimeFormatted}"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintBottom_toTopOf="@id/guideline4"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@id/guideline_icon_width"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_city_name"
+                        tools:text="last updated" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
+
+                    <TextView
+                        android:id="@+id/textView_temp_current"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/temp_current_bind(weatherInfo.temperature.currentTemp)}"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="52sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/textView_temp_feel"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+                        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                        app:layout_constraintTop_toBottomOf="@id/guideline_info_top"
+                        tools:text="temp" />
+
+                    <TextView
+                        android:id="@+id/textView_temp_feel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/temp_feels_like_bind(weatherInfo.temperature.feelTemp)}"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toTopOf="@+id/textView_temp_min"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+                        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_temp_current"
+                        tools:text="feel temp" />
+
+                    <TextView
+                        android:id="@+id/textView_weat_main"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{weatherInfo.weather.get(0).main}"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toTopOf="@+id/textView_weat_desc"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                        app:layout_constraintStart_toStartOf="@id/guideline3"
+                        app:layout_constraintTop_toBottomOf="@id/guideline_info_top"
+                        tools:text="main" />
+
+                    <TextView
+                        android:id="@+id/textView_weat_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{weatherInfo.weather.get(0).description}"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintBottom_toTopOf="@+id/textView_clouds"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                        app:layout_constraintStart_toStartOf="@id/guideline3"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_weat_main"
+                        tools:text="desc" />
+
+                    <TextView
+                        android:id="@+id/textView_clouds"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/cloudiness_bind(weatherInfo.clouds.all)}"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintBottom_toTopOf="@+id/textView_sunrise"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                        app:layout_constraintStart_toStartOf="@id/guideline3"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_weat_desc"
+                        tools:text="clouds" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_icon_width"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.33" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.6" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_info_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.2" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_info_bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.40629274" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.6" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout4"
+                        android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_weight="2"
-                        android:text="@{@string/humidity_bind(weatherInfo.temperature.humidity)}"
-                        tools:text="humidity" />
-                </LinearLayout>
+                        android:orientation="vertical"
+                        android:padding="8dp"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+                        app:layout_constraintEnd_toStartOf="@+id/linearLayout5"
+                        app:layout_constraintStart_toStartOf="@id/guideline_left"
+                        app:layout_constraintTop_toTopOf="@+id/guideline2">
 
-                <TextView
-                    android:id="@+id/textView_sunrise"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:drawableStart="@drawable/weather_sunrise"
-                    android:text="@{weatherInfo.additional.getSunriseFormatted()}"
-                    android:textColor="@android:color/black"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline_info_bottom"
-                    app:layout_constraintEnd_toStartOf="@+id/textView_sunset"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="@id/guideline3"
-                    tools:text="sunrise" />
+                        <TextView
+                            android:id="@+id/textView_wind_title"
+                            style="@style/weat_info_item_title"
+                            android:layout_width="match_parent"
+                            android:drawableStart="@drawable/weather_windy"
+                            android:gravity="center_vertical"
+                            android:text="@string/wind" />
 
-                <TextView
-                    android:id="@+id/textView_sunset"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:drawableStart="@drawable/weather_sunset"
-                    android:text="@{weatherInfo.additional.getSunsetFormatted()}"
-                    android:textColor="@android:color/black"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline_info_bottom"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/textView_sunrise"
-                    tools:text="sunset" />
+                        <TextView
+                            android:id="@+id/textView_wind_value"
+                            style="@style/weat_info_item_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:text="@{@string/wind_bind(weatherInfo.wind.speed, weatherInfo.wind.degree)}"
+                            android:textAlignment="center"
+                            tools:text="wind" />
+                    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textView_temp_min"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/thermometer_chevron_down"
-                    android:text="@{@string/temp_current_bind(weatherInfo.temperature.minTemp)}"
-                    android:textColor="@android:color/black"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline_info_bottom"
-                    app:layout_constraintEnd_toStartOf="@+id/textView_temp_max"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="@id/guideline_left"
-                    tools:text="temp min" />
+                    <LinearLayout
+                        android:id="@+id/linearLayout5"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        android:padding="8dp"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+                        app:layout_constraintEnd_toStartOf="@+id/linearLayout6"
+                        app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+                        app:layout_constraintTop_toTopOf="@+id/guideline2">
 
-                <TextView
-                    android:id="@+id/textView_temp_max"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/thermometer_chevron_up"
-                    android:text="@{@string/temp_current_bind(weatherInfo.temperature.maxTemp)}"
-                    android:textColor="@android:color/black"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline_info_bottom"
-                    app:layout_constraintEnd_toStartOf="@id/guideline9"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/textView_temp_min"
-                    tools:text="temp max" />
+                        <TextView
+                            android:id="@+id/textView_pressure_title"
+                            style="@style/weat_info_item_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/arrow_collapse_down"
+                            android:text="@string/pressure" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                        <TextView
+                            android:id="@+id/textView_pressure_value"
+                            style="@style/weat_info_item_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:text="@{@string/pressure_bind(weatherInfo.temperature.pressure)}"
+                            tools:text="pressure" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout6"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        android:padding="8dp"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+                        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+                        app:layout_constraintStart_toEndOf="@+id/linearLayout5"
+                        app:layout_constraintTop_toTopOf="@+id/guideline2">
+
+                        <TextView
+                            android:id="@+id/textView_humidity_title"
+                            style="@style/weat_info_item_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/water_percent"
+                            android:text="@string/humidity" />
+
+                        <TextView
+                            android:id="@+id/textView_humidity_value"
+                            style="@style/weat_info_item_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:text="@{@string/humidity_bind(weatherInfo.temperature.humidity)}"
+                            tools:text="humidity" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textView_sunrise"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:drawableStart="@drawable/weather_sunrise"
+                        android:text="@{weatherInfo.additional.getSunriseFormatted()}"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline_info_bottom"
+                        app:layout_constraintEnd_toStartOf="@+id/textView_sunset"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="@id/guideline3"
+                        tools:text="sunrise" />
+
+                    <TextView
+                        android:id="@+id/textView_sunset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:drawableStart="@drawable/weather_sunset"
+                        android:text="@{weatherInfo.additional.getSunsetFormatted()}"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline_info_bottom"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView_sunrise"
+                        tools:text="sunset" />
+
+                    <TextView
+                        android:id="@+id/textView_temp_min"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/thermometer_chevron_down"
+                        android:text="@{@string/temp_current_bind(weatherInfo.temperature.minTemp)}"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline_info_bottom"
+                        app:layout_constraintEnd_toStartOf="@+id/textView_temp_max"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="@id/guideline_left"
+                        tools:text="temp min" />
+
+                    <TextView
+                        android:id="@+id/textView_temp_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/thermometer_chevron_up"
+                        android:text="@{@string/temp_current_bind(weatherInfo.temperature.maxTemp)}"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline_info_bottom"
+                        app:layout_constraintEnd_toStartOf="@id/guideline9"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView_temp_min"
+                        tools:text="temp max" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <!--        </FrameLayout>-->
+
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/bottom_bar"
+                style="@style/Widget.MaterialComponents.BottomAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:backgroundTint="@color/colorPrimaryDark"
+                app:fabAlignmentMode="end"
+                app:fabAnimationMode="slide"
+                app:navigationIcon="@drawable/ic_menu_white_24dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/colorPrimary"
+                app:layout_anchor="@id/bottom_bar"
+                app:srcCompat="@drawable/ic_search_white_24dp" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </LinearLayout>
-
 </layout>
