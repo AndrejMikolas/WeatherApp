@@ -131,14 +131,15 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
      */
     private fun loadWeather(initial: Boolean)
     {
-        if (initial)
-        {
-            //TODO initial search with saved value from shared prefs
-            viewModel.searchChanged("Povazska bystrica")
-        } else
-        {
-            viewModel.loadWeatherInfo()
-        }
+//        if (initial)
+//        {
+//            //TODO initial search with saved value from shared prefs
+//            viewModel.searchChanged("Povazska bystrica")
+//        } else
+//        {
+//            viewModel.loadWeatherInfo(initial)
+//        }
+        viewModel.loadWeatherInfo(initial)
     }
 
     /**
@@ -181,7 +182,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
                 return false
             }
         })
-        searchview_city.setOnQueryTextFocusChangeListener { view, focused ->
+        searchview_city.setOnQueryTextFocusChangeListener { _, focused ->
             if (!focused)
             {
                 fab_search.visibility = View.VISIBLE
