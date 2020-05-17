@@ -108,12 +108,10 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        swipe_container.setOnRefreshListener(this)
         setupObservers()
         setupViews()
         setupListeners()
         setupSnacks()
-        loadWeather(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
@@ -156,17 +154,21 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
      */
     private fun setupListeners()
     {
+        swipe_container.setOnRefreshListener(this)
+
         fab_search.setOnClickListener {
             searchview_city.visibility = View.VISIBLE
             searchview_city.isIconified = false
             searchview_city.setQuery("", false)
             fab_search.visibility = View.GONE
         }
+
         searchview_city.setOnCloseListener {
             fab_search.visibility = View.VISIBLE
             searchview_city.visibility = View.GONE
             true
         }
+
         searchview_city.setOnQueryTextListener(object : SearchView.OnQueryTextListener
         {
             override fun onQueryTextSubmit(query: String?): Boolean
