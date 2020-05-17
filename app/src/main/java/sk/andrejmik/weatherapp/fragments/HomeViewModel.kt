@@ -25,6 +25,11 @@ class HomeViewModel : ViewModel()
     val onEvent = MutableLiveData<Event<LoadEvent>>()
     private val searchStringLiveData = MutableLiveData<String>("")
 
+    init
+    {
+        loadWeatherInfo(true)
+    }
+
     fun searchChanged(cityName: String)
     {
         searchStringLiveData.value = cityName
@@ -44,7 +49,7 @@ class HomeViewModel : ViewModel()
             onEvent.postValue(Event(LoadEvent.NETWORK_ERROR))
             return
         }
-        var cityToSearch: String = ""
+        var cityToSearch = ""
         if (initial)
         {
             val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(WeatherApp.getContext())
@@ -52,6 +57,7 @@ class HomeViewModel : ViewModel()
             if (!savedCity.isNullOrEmpty())
             {
                 cityToSearch = savedCity
+                searchStringLiveData.value = cityToSearch
             }
         } else
         {
@@ -87,7 +93,8 @@ class HomeViewModel : ViewModel()
     {
         val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(WeatherApp.getContext())
         val editor = prefs.edit()
+        editor.clear()
         editor.putString("city", searchStringLiveData.value)
-        editor.apply()
+        editor.commit()
     }
 }
