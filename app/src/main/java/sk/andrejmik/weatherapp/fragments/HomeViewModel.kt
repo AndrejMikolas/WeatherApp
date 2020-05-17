@@ -1,10 +1,13 @@
 package sk.andrejmik.weatherapp.fragments
 
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import sk.andrejmik.weatherapp.WeatherApp
 import sk.andrejmik.weatherapp.api_repository.APIWeatherInfoRepository
 import sk.andrejmik.weatherapp.objects.WeatherInfo
 import sk.andrejmik.weatherapp.repository_interface.IWeatherInfoRepository
@@ -20,14 +23,20 @@ class HomeViewModel : ViewModel()
         MutableLiveData<WeatherInfo>()
     }
     val onEvent = MutableLiveData<Event<LoadEvent>>()
+    private val searchStringLiveData = MutableLiveData<String>("")
 
+    fun searchChanged(cityName: String)
+    {
+        searchStringLiveData.value = cityName
+        loadWeatherInfo(false)
+    }
 
     fun getWeatherInfo(): LiveData<WeatherInfo>
     {
         return weatherInfo
     }
 
-    fun loadWeatherInfo(cityName: String)
+    fun loadWeatherInfo(initial: Boolean)
     {
         onEvent.postValue(Event(LoadEvent.STARTED))
         if (!NetworkHelper.verifyAvailableNetwork())
@@ -35,27 +44,50 @@ class HomeViewModel : ViewModel()
             onEvent.postValue(Event(LoadEvent.NETWORK_ERROR))
             return
         }
-        if (cityName.isEmpty())
+        var cityToSearch: String = ""
+        if (initial)
         {
-            onEvent.postValue(Event(LoadEvent.UNKNOWN_ERROR))
-            return
+            val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(WeatherApp.getContext())
+            val savedCity = prefs.getString("city", "");
+            if (!savedCity.isNullOrEmpty())
+            {
+                cityToSearch = savedCity
+            }
+        } else
+        {
+            cityToSearch = searchStringLiveData.value!!
         }
-        weatherInfoRepository.get(cityName).subscribeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe(this::next, this::error, this::complete)
+        weatherInfoRepository.get(cityToSearch).subscribeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe(this::onNext, this::onError, this::onComplete)
     }
 
-    private fun next(loadedWeatherInfo: WeatherInfo)
+    private fun onNext(loadedWeatherInfo: WeatherInfo)
     {
         weatherInfo.postValue(loadedWeatherInfo)
     }
 
-    private fun complete()
+    private fun onComplete()
     {
         onEvent.postValue(Event(LoadEvent.COMPLETE))
+        saveCityToSharedPrefs()
     }
 
-    private fun error(t: Throwable)
+    private fun onError(t: Throwable)
     {
+        if (t.message.equals("404"))
+        {
+            onEvent.postValue(Event(LoadEvent.NOT_FOUND))
+            return
+        }
         onEvent.postValue(Event(LoadEvent.UNKNOWN_ERROR))
+        saveCityToSharedPrefs()
+    }
+
+    private fun saveCityToSharedPrefs()
+    {
+        val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(WeatherApp.getContext())
+        val editor = prefs.edit()
+        editor.putString("city", searchStringLiveData.value)
+        editor.apply()
     }
 }
