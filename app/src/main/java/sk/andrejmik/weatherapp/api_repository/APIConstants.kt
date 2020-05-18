@@ -1,9 +1,11 @@
 package sk.andrejmik.weatherapp.api_repository
 
+import sk.andrejmik.weatherapp.BuildConfig
+
 class APIConstants
 {
     companion object
     {
-        const val weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?appid=1b7efe59a854cefa683022decfd17edb&units=metric"
+        val weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?appid=${BuildConfig.WEATHER_API_KEY}&units=metric"
     }
 }

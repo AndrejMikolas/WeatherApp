@@ -114,13 +114,6 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
         setupSnacks()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
-    {
-        super.onViewCreated(view, savedInstanceState)
-        val activity = (requireActivity() as AppCompatActivity)
-        activity.setSupportActionBar(bottom_bar)
-    }
-
     /**
      * Load new weather info.
      * @param initial
