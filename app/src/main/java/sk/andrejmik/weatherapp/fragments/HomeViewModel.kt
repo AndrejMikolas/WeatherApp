@@ -20,19 +20,19 @@ import sk.andrejmik.weatherapp.utlis.NetworkHelper
 class HomeViewModel : ViewModel()
 {
     private var weatherInfoRepository: IWeatherInfoRepository = RepositoryProvider.getWeatherInfoRepository()
-
     private val weatherInfo: MutableLiveData<WeatherInfo> by lazy {
         MutableLiveData<WeatherInfo>()
     }
-    val onEvent = MutableLiveData<Event<LoadEvent>>()
     private val searchStringLiveData = MutableLiveData("")
+    private var isInitialLoad = true
+    val onEvent = MutableLiveData<Event<LoadEvent>>()
 
     /**
      * Load weather data on init
      */
     init
     {
-        loadWeatherInfo(true)
+        loadWeatherInfo()
     }
 
     /**
@@ -41,7 +41,7 @@ class HomeViewModel : ViewModel()
     fun searchChanged(cityName: String)
     {
         searchStringLiveData.value = cityName
-        loadWeatherInfo(false)
+        loadWeatherInfo()
     }
 
     fun getWeatherInfo(): LiveData<WeatherInfo>
@@ -54,7 +54,7 @@ class HomeViewModel : ViewModel()
      *      if TRUE, data will be loaded for city saved in shared preferences
      *      if FALSE, data will be loaded for last city searched by user
      */
-    fun loadWeatherInfo(initial: Boolean)
+    fun loadWeatherInfo()
     {
         onEvent.postValue(Event(LoadEvent.STARTED))
         if (!NetworkHelper.verifyAvailableNetwork())
@@ -63,16 +63,16 @@ class HomeViewModel : ViewModel()
             return
         }
         val cityToSearch: String
-        if (initial)
+        if (isInitialLoad || searchStringLiveData.value != null)
         {
             val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(WeatherApp.getContext())
             val savedCity = prefs.getString("city", "")
-            if (!savedCity.isNullOrEmpty())
+            cityToSearch = if (!savedCity.isNullOrEmpty())
             {
-                cityToSearch = savedCity
+                savedCity
             } else
             {
-                cityToSearch = WeatherApp.getContext()!!.resources.getString(R.string.default_city)
+                WeatherApp.getContext()!!.resources.getString(R.string.default_city)
             }
             searchStringLiveData.value = cityToSearch
         } else
@@ -98,6 +98,7 @@ class HomeViewModel : ViewModel()
     {
         onEvent.postValue(Event(LoadEvent.COMPLETE))
         saveCityToSharedPrefs()
+        isInitialLoad = false
     }
 
     /**

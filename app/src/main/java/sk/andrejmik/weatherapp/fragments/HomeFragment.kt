@@ -120,7 +120,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
      */
     private fun loadWeather()
     {
-        viewModel.loadWeatherInfo(false)
+        viewModel.loadWeatherInfo()
     }
 
     /**

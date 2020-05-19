@@ -269,6 +269,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:baselineAligned="false"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
                             <LinearLayout
@@ -321,7 +322,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@{@string/humidity_bind(weatherInfo.temperature.humidity)}"
-                                    tools:text="humidity" />
+                                    tools:text="@string/humidity" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -365,6 +366,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:elevation="4dp"
             app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
