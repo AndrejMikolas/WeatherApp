@@ -1,5 +1,6 @@
 package sk.andrejmik.weatherapp.api_repository
 
+import android.util.Log
 import androidx.annotation.NonNull
 import com.google.gson.Gson
 import io.reactivex.Observable
@@ -12,6 +13,8 @@ import java.util.concurrent.TimeUnit
 
 open class APIWeatherInfoRepository : IWeatherInfoRepository
 {
+    private val TAG = "WEAT_API"
+
     override fun get(@NonNull cityName: String): Observable<WeatherInfo>
     {
         val requestUrl: String = APIConstants.weatherApiUrl.plus("&q=$cityName")
@@ -30,13 +33,20 @@ open class APIWeatherInfoRepository : IWeatherInfoRepository
                 {
                     if (response.isSuccessful)
                     {
-                        val jsonBody = response.body?.string()
-                        val result = Gson().fromJson<WeatherInfo>(
-                            jsonBody.toString(),
-                            WeatherInfo::class.java
-                        )
-                        emitter.onNext(result)
-                        emitter.onComplete()
+                        try
+                        {
+                            val jsonBody = response.body?.string()
+                            val result = Gson().fromJson<WeatherInfo>(
+                                jsonBody.toString(),
+                                WeatherInfo::class.java
+                            )
+                            emitter.onNext(result)
+                            emitter.onComplete()
+                        } catch (e: Exception)
+                        {
+                            Log.e(TAG, "Failed to deserialize JSON body from $requestUrl: ${e.message}")
+                            emitter.onError(e)
+                        }
                     } else
                     {
                         emitter.onError(IllegalStateException("${response.code}"))
