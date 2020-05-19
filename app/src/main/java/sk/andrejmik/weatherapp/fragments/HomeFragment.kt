@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -37,6 +36,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
             Picasso.with(context).load("https://openweathermap.org/img/wn/${weatherInfo.weather[0].icon}@2x.png").into(binding.imageViewWeaIcon)
         }
     }
+
     /**
      * Observer for handling events of loading weather info. For various types of event it either starts or stops refreshing animation, enable or
      * disable swipe container and shows or dismiss informational snackbars
@@ -92,7 +92,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
      * Listener for button on error snackbar to reload data
      */
     private var clickRetryLoadListener = View.OnClickListener {
-        loadWeather(false)
+        loadWeather()
     }
     //endregion
 
@@ -107,6 +107,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
     {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
+        @Suppress("DEPRECATION")
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         setupObservers()
         setupViews()
@@ -116,21 +117,10 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
 
     /**
      * Load new weather info.
-     * @param initial
-     *      if TRUE, data will be loaded for city saved in shared preferences
-     *      if FALSE, data will be loaded for last city searched by user
      */
-    private fun loadWeather(initial: Boolean)
+    private fun loadWeather()
     {
-//        if (initial)
-//        {
-//            //TODO initial search with saved value from shared prefs
-//            viewModel.searchChanged("Povazska bystrica")
-//        } else
-//        {
-//            viewModel.loadWeatherInfo(initial)
-//        }
-        viewModel.loadWeatherInfo(initial)
+        viewModel.loadWeatherInfo(false)
     }
 
     /**
@@ -229,7 +219,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
     @Override
     override fun onRefresh()
     {
-        loadWeather(false)
+        loadWeather()
     }
 
 }

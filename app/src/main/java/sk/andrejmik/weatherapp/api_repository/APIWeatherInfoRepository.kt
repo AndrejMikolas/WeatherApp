@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 
 open class APIWeatherInfoRepository : IWeatherInfoRepository
 {
-    private val TAG = "WEAT_API"
+    val TAG = "WEAT_API"
 
     override fun get(@NonNull cityName: String): Observable<WeatherInfo>
     {
@@ -36,7 +36,7 @@ open class APIWeatherInfoRepository : IWeatherInfoRepository
                         try
                         {
                             val jsonBody = response.body?.string()
-                            val result = Gson().fromJson<WeatherInfo>(
+                            val result = Gson().fromJson(
                                 jsonBody.toString(),
                                 WeatherInfo::class.java
                             )

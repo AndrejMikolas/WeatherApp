@@ -6,6 +6,6 @@ class APIConstants
 {
     companion object
     {
-        val weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?appid=${BuildConfig.WEATHER_API_KEY}&units=metric"
+        const val weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?appid=${BuildConfig.WEATHER_API_KEY}&units=metric"
     }
 }
