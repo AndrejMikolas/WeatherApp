@@ -63,7 +63,7 @@ class HomeViewModel : ViewModel()
             return
         }
         val cityToSearch: String
-        if (isInitialLoad || searchStringLiveData.value != null)
+        if (isInitialLoad || searchStringLiveData.value == null)
         {
             val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(WeatherApp.getContext())
             val savedCity = prefs.getString("city", "")
