@@ -11,10 +11,17 @@ import sk.andrejmik.weatherapp.repository_interface.IWeatherInfoRepository
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
+/**
+ * Repository for getting weather data from API
+ */
 open class APIWeatherInfoRepository : IWeatherInfoRepository
 {
-    val TAG = "WEAT_API"
+    val TAG = "WEATH_API"
 
+    /**
+     * Method for getting current weather info from API by city name
+     * @param cityName: for which city will be weather loaded
+     */
     override fun get(@NonNull cityName: String): Observable<WeatherInfo>
     {
         val requestUrl: String = APIConstants.weatherApiUrl.plus("&q=$cityName")
@@ -56,5 +63,4 @@ open class APIWeatherInfoRepository : IWeatherInfoRepository
             emitter.setCancellable { }
         }.timeout(10, TimeUnit.SECONDS).subscribeOn(Schedulers.computation()).observeOn(Schedulers.computation())
     }
-
 }

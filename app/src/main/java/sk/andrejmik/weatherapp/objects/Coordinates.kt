@@ -2,6 +2,9 @@ package sk.andrejmik.weatherapp.objects
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * City coordinates
+ */
 open class Coordinates : BaseObject()
 {
     @SerializedName("lon")

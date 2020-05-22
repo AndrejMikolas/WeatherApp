@@ -2,6 +2,9 @@ package sk.andrejmik.weatherapp.objects
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Basic weather info
+ */
 open class Weather : BaseObject()
 {
     @SerializedName("id")

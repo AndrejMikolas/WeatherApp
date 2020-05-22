@@ -2,6 +2,9 @@ package sk.andrejmik.weatherapp.objects
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Temperature info
+ */
 open class Temperature : BaseObject()
 {
     @SerializedName("temp")

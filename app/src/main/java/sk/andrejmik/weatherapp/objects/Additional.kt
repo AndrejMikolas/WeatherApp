@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Additional info for weather
+ */
 open class Additional : BaseObject()
 {
     @SerializedName("type")
@@ -26,13 +29,13 @@ open class Additional : BaseObject()
 
     fun getSunriseFormatted(): String
     {
-        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault());
+        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
         return formatter.format(Date(sunrise * 1000))
     }
 
     fun getSunsetFormatted(): String
     {
-        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault());
+        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
         return formatter.format(Date(sunset * 1000))
     }
 }

@@ -2,6 +2,9 @@ package sk.andrejmik.weatherapp.objects
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Wind info
+ */
 open class Wind : BaseObject()
 {
     @SerializedName("speed")

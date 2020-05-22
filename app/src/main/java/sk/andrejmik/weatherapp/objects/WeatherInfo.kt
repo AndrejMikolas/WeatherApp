@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Full weather info
+ */
 open class WeatherInfo : BaseObject()
 {
     @SerializedName("id")
@@ -47,7 +50,7 @@ open class WeatherInfo : BaseObject()
 
     fun getDateTimeFormatted(): String
     {
-        val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
+        val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault())
         return formatter.format(Date(dateTime * 1000))
     }
 }

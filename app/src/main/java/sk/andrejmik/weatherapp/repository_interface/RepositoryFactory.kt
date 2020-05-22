@@ -2,7 +2,10 @@ package sk.andrejmik.weatherapp.repository_interface
 
 import sk.andrejmik.weatherapp.api_repository.APIWeatherInfoRepository
 
-class RepositoryProvider
+/**
+ * Factory for getting current repository type based on param RepositoryType
+ */
+class RepositoryFactory
 {
     companion object
     {

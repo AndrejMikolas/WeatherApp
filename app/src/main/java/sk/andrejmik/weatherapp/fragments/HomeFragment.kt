@@ -30,6 +30,9 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
     private lateinit var snackUnknownError: Snackbar
     private lateinit var snackNotFound: Snackbar
 
+    /**
+     * Observer fot weather info. New weather info is bound to UI and using external library is set weather icon to UI
+     */
     private val weatherInfoLoadedObserver = Observer<WeatherInfo> { weatherInfo ->
         weatherInfo?.let {
             binding.weatherInfo = weatherInfo

@@ -4,6 +4,9 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import sk.andrejmik.weatherapp.WeatherApp
 
+/**
+ * Helper class for easy access to SharedPreferences
+ */
 class PreferencesManager
 {
     companion object
@@ -27,14 +30,14 @@ class PreferencesManager
         }
         //endregion
 
-        public fun putString(key: String, value: String)
+        fun putString(key: String, value: String)
         {
             val editor = getEditor()
             editor.putString(key, value)
             editor.apply()
         }
 
-        public fun getString(key: String): String
+        fun getString(key: String): String
         {
             val prefs = getSharedPreferences()
             return prefs.getString(key, "")!!

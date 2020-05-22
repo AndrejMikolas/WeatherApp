@@ -9,7 +9,7 @@ import sk.andrejmik.weatherapp.R
 import sk.andrejmik.weatherapp.WeatherApp
 import sk.andrejmik.weatherapp.objects.WeatherInfo
 import sk.andrejmik.weatherapp.repository_interface.IWeatherInfoRepository
-import sk.andrejmik.weatherapp.repository_interface.RepositoryProvider
+import sk.andrejmik.weatherapp.repository_interface.RepositoryFactory
 import sk.andrejmik.weatherapp.utlis.Event
 import sk.andrejmik.weatherapp.utlis.LoadEvent
 import sk.andrejmik.weatherapp.utlis.NetworkHelper
@@ -17,7 +17,7 @@ import sk.andrejmik.weatherapp.utlis.PreferencesManager
 
 class HomeViewModel : ViewModel()
 {
-    private var weatherInfoRepository: IWeatherInfoRepository = RepositoryProvider.getWeatherInfoRepository()
+    private var weatherInfoRepository: IWeatherInfoRepository = RepositoryFactory.getWeatherInfoRepository()
     private val weatherInfo: MutableLiveData<WeatherInfo> by lazy {
         MutableLiveData<WeatherInfo>()
     }
@@ -48,9 +48,7 @@ class HomeViewModel : ViewModel()
     }
 
     /**
-     * @param initial
-     *      if TRUE, data will be loaded for city saved in shared preferences
-     *      if FALSE, data will be loaded for last city searched by user
+     * Starts loading weather info from current type of repository
      */
     fun loadWeatherInfo()
     {
@@ -64,7 +62,7 @@ class HomeViewModel : ViewModel()
         if (isInitialLoad || searchStringLiveData.value == null)
         {
             val savedCity = PreferencesManager.getString(PreferencesManager.PREFERENCES_KEY_SEARCHED_CITY)
-            cityToSearch = if (!savedCity.isNullOrEmpty())
+            cityToSearch = if (savedCity.isNotEmpty())
             {
                 savedCity
             } else
