@@ -1,8 +1,5 @@
 package sk.andrejmik.weatherapp.fragments
 
-import android.content.SharedPreferences
-import android.content.res.Resources
-import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +13,7 @@ import sk.andrejmik.weatherapp.repository_interface.RepositoryProvider
 import sk.andrejmik.weatherapp.utlis.Event
 import sk.andrejmik.weatherapp.utlis.LoadEvent
 import sk.andrejmik.weatherapp.utlis.NetworkHelper
+import sk.andrejmik.weatherapp.utlis.PreferencesManager
 
 class HomeViewModel : ViewModel()
 {
@@ -65,8 +63,7 @@ class HomeViewModel : ViewModel()
         val cityToSearch: String
         if (isInitialLoad || searchStringLiveData.value == null)
         {
-            val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(WeatherApp.getContext())
-            val savedCity = prefs.getString("city", "")
+            val savedCity = PreferencesManager.getString(PreferencesManager.PREFERENCES_KEY_SEARCHED_CITY)
             cityToSearch = if (!savedCity.isNullOrEmpty())
             {
                 savedCity
@@ -120,10 +117,6 @@ class HomeViewModel : ViewModel()
      */
     private fun saveCityToSharedPrefs()
     {
-        val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(WeatherApp.getContext())
-        val editor = prefs.edit()
-        editor.clear()
-        editor.putString("city", searchStringLiveData.value)
-        editor.apply()
+        searchStringLiveData.value?.let { PreferencesManager.putString(PreferencesManager.PREFERENCES_KEY_SEARCHED_CITY, it) }
     }
 }
