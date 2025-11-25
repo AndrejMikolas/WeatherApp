@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Moja API Dokumentácia</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
+    <style>
+      body { margin: 0; padding: 0; }
+      .swagger-ui .topbar { background-color: #1b1b1b; }
+    </style>
+  </head>
+  <body>
+    <div id="swagger-ui"></div>
+    
+    <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js" charset="UTF-8"> </script>
+    <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
+    
+    <script>
+      window.onload = function() {
+        // Definujeme cesty k API
+        const ui = SwaggerUIBundle({
+          urls: [
+            {url: "./Kiosk_API.yml", name: "Kiosk_API"},
+            {url: "./Kiosk_auth_API.yml", name: "Kiosk_auth_API"},
+            {url: "./Mobile_API.yml", name: "Mobile_API"}
+          ],
+          "urls.primaryName": "API Projekt 1",
+          
+          dom_id: '#swagger-ui',
+          deepLinking: true,
+          
+          // OPRAVA: Tu bola chyba. SwaggerUIStandalonePreset je samostatná premenná.
+          presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIStandalonePreset 
+          ],
+          
+          plugins: [
+            SwaggerUIBundle.plugins.DownloadUrl
+          ],
+          
+          layout: "StandaloneLayout"
+        });
+      };
+    </script>
+  </body>
+</html>

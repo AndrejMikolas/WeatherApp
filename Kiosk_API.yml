@@ -1,0 +1,2733 @@
+openapi: 3.1.0
+info:
+  title: API
+  version: '1.25.0'
+  description: |-
+    ## Request/Response Format
+    - Requests have to be encoded using the UTF-8 character set. 
+    - Response format is JSON Content-Type: application/json
+  contact:
+    name: Benu e-comm
+    email: a.team-eshop@benu.cz
+    url: 'https://www.benu.cz'
+servers:
+  - url: https://{prodApiUrl}/api/base
+    description: Production
+    variables:
+      prodApiUrl:
+        default: benu.cz
+        enum:
+          - benu.cz
+          - benulekaren.sk
+          - benu.rs
+          - helpnet.ro
+          - benunapredpis.cz
+  - url: https://{prodWarmupApiUrl}/api/base
+    description: Production Warmup
+    variables:
+      prodWarmupApiUrl:
+        default: warmup.benu.cz
+        enum:
+          - warmup.benu.cz
+          - warmup.benulekaren.sk
+          - warmup.benu.rs
+          - warmup.helpnet.ro
+          - warmup.benunapredpis.cz
+  - url: https://{stagingApiUrl}/api/base
+    description: Test
+    variables:
+      stagingApiUrl:
+        default: cz.benu.test
+        enum:
+          - cz.benu.test
+          - rs.benu.test
+          - ro.benu.test
+  - url: https://{stagingWarmupApiUrl}/api/base
+    description: Test warmup
+    variables:
+      stagingWarmupApiUrl:
+        default: warmup.cz.benu.test
+        enum:
+          - warmup.cz.benu.test
+          - warmup.rs.benu.test
+          - warmup.ro.benu.test
+  - url: http://{localApiUrl}/api/base
+    description: Localhost
+    variables:
+      localApiUrl:
+        default: cz.benu.l:8081
+        enum:
+          - cz.benu.l:8081
+          - sk.benu.l:8081
+          - rs.benu.l:8081
+          - ro.benu.l:8081
+          - czrx.benu.l:8081
+paths:
+  /v1/products/{id}:
+    get:
+      summary: Retrieve product details by ID
+      description: Get detailed information about a specific product, including its variants and pricing details.
+      operationId: getProductById
+      tags:
+        - Products
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/PriceLevel'
+      responses:
+        '200':
+          description: Successful response with product details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/DataObjectResponse'
+                      - $ref: '#/components/schemas/ProductDetailResponse'
+                required:
+                  - data
+              examples:
+                successExample:
+                  summary: Example of a successful response
+                  value:
+                    data:
+                      id: "275314"
+                      type: "ProductDetail"
+                      attributes:
+                        id: "275314"
+                        itemId: "5567"
+                        status: "active"
+                        name: "ESSENTIALE 300MG tvrdé tobolky 90 - balení 2 ks"
+                        title: "ESSENTIALE 300MG tvrdé tobolky 90 - balení 2 ks"
+                        alias: "essentiale-300mg-tvrde-tobolky-90-baleni-2-ks"
+                        brand:
+                          id: "58"
+                          name: "ESSENTIALE"
+                          alias: "essentiale"
+                        isErotic: false
+                        isOtc: false
+                        isPrescribableMedicalDevice: false
+                        bundleQuantity: 1
+                        notForSaleSeparately: false
+                        isPersonalPickupAvailable: true
+                        hasRecyclingFee: false
+                        productCondition: "new"
+                        images:
+                          - id: "210509"
+                            source: "internal"
+                            filename: "1_210509"
+                            extension: "jpg"
+                            title: "MUCONASAL PLUS nosní sprej 10ml"
+                            url: "/someurl.exp?somecode=123456"
+                        tags:
+                          - id: "new"
+                            type: "new"
+                            label: "Novinka"
+                          - id: "delivery"
+                            type: "delivery"
+                            label: "Doprava zdarma"
+                        reviewSummary:
+                          value: 4
+                          percentageValue: 80
+                          count: 10
+                        availability:
+                          isAvailable: true
+                          status: "IN_STOCK"
+                          pharmacyAvailabilityCount: 15
+                        price:
+                          price: 149
+                          rrpPrice: 199
+                          loyaltyPrice: 119
+                          vat: 21
+                          showDiscount: true
+                          discountPercent: 5
+                          currencyCode: "CZK"
+                          unitPrice:
+                            price: 149
+                            unitText: "1 kus"
+                          priceLevel: "NORMAL"
+                        bundles:
+                          - id: "275314"
+                            name: "Balíček produktů 1 ks"
+                            alias: "essentiale"
+                            image:
+                              id: "217682"
+                              filename: "1_210509"
+                              extension: "jpg"
+                              title: "MUCONASAL PLUS nosní sprej 10ml"
+                            price:
+                              price: 150,
+                              rrpPrice: 150,
+                              showDiscount: false,
+                              discountPercent: 0
+                            quantity: 1
+                          - id: "275314"
+                            title: "Balíček produktů 2 ks"
+                            alias: "essentiale"
+                            image:
+                              id: "217682"
+                              filename: "1_210509"
+                              extension: "jpg"
+                              title: "MUCONASAL PLUS nosní sprej 10ml"
+                            price:
+                              price: 250,
+                              rrpPrice: 150,
+                              showDiscount: false,
+                              discountPercent: 0
+                            quantity: 2
+                        variants:
+                          - id: "275314"
+                            name: "PROSTAMOL UNO měkké tobolky 90"
+                            alias: "essentiale"
+                            image:
+                              id: "217682"
+                              filename: "1_210509"
+                              extension: "jpg"
+                              title: "MUCONASAL PLUS nosní sprej 10ml"
+                            price:
+                              price: 250,
+                              rrpPrice: 150,
+                              showDiscount: false,
+                              discountPercent: 0
+                            condition: "new"
+                        multiActions:
+                          - id: "1"
+                            type: "gift"
+                            name: "Banner Title"
+                            description: "Add <b>4 products of brand Jevity</b> to your cart, and the price of the <b>cheapest</b> will be deducted in the shopping cart."
+                            disclaimer: "Does not apply to second-quality products. Valid until 10.1.2025 or until stocks are exhausted."
+                            url: "https://benu.cz/akce"
+                            gifts: null
+                        categories:
+                          - id: "55528"
+                            name: "Léky na horečku"
+                            alias: "leky-na-horecku"
+                        banners:
+                          - id: "1"
+                            entity: "productInformationBanner"
+                            title: "Banner Title"
+                            description: "Get cash back with selected <b>Oral-B</b> products."
+                            disclaimer: "Does not apply to second-quality products. Valid until 23.2.2025 or until stocks are exhausted."
+                            url: "https://benu.cz/akce"
+                            validRange:
+                              from: "2025-08-08T18:00:00+02:00"
+                              to: "2025-08-09T18:00:00+02:00"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/products/{id}/favorite:
+    get:
+      summary: Checks if product is in user favorite list
+      security:
+        - BearerAuth: [ ]
+        - CookieAuth: [ ]
+      description: Returns information about if product is in user favorite list.
+      operationId: isFavoriteProduct
+      tags:
+        - Products
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Successful response with user favorite product check result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/DataObjectResponse'
+                      - $ref: '#/components/schemas/FavoriteProductCheckResultResponse'
+                required:
+                  - data
+              examples:
+                successExample:
+                  summary: Example of a successful response
+                  value:
+                    data:
+                      type: "FavoriteProductCheckResult"
+                      attributes:
+                        isFavorite: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      summary: Add product to favorite list
+      security:
+        - BearerAuth: [ ]
+        - CookieAuth: [ ]
+      description: Adds product to user's favorite list by ID.
+      operationId: addFavoriteProduct
+      tags:
+        - Products
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '204':
+          description: Successfully added product to user favorite list.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+    delete:
+      summary: Remove product from favorite list
+      security:
+        - BearerAuth: [ ]
+        - CookieAuth: [ ]
+      description: Removes product from user's favorite list by ID.
+      operationId: removeFavoriteProduct
+      tags:
+        - Products
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '204':
+          description: Successfully removed product from user favorite list.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /v1/auth/nonce:
+    get:
+      summary: Retrieve nonce
+      description: Get nonce used for unique authentication requests.
+      operationId: getAuthNonce
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: Successful response with nonce.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/DataObjectResponse'
+                      - $ref: '#/components/schemas/NonceResponse'
+                required:
+                  - data
+              examples:
+                successExample:
+                  summary: Example of a successful response
+                  value:
+                    data:
+                      type: "Nonce"
+                      attributes:
+                        nonce: "DFuvFlakEYIs44Fza2KQ5ufwBAXo7VU6zUvDSzYzoUA"
+  /v1/auth/oidc/{serviceProvider}:
+    post:
+      summary: Authenticate user
+      description: Authenticate user using OIDC Id token through given service provider.
+      operationId: postOidcAuth
+      tags:
+        - Authentication
+      parameters:
+        - $ref: '#/components/parameters/OidcServiceProvider'
+      requestBody:
+        $ref: '#/components/requestBodies/OidcTokenBody'
+      responses:
+        '200':
+          description: Successfully authenticated user.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/pharmacies/{id}:
+    get:
+      summary: Retrieve pharmacy details by ID
+      description: Get detailed information about pharmacy.
+      operationId: getPharmacyById
+      tags:
+        - Pharmacies
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Successful response with pharmacy details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/DataObjectResponse'
+                      - $ref: '#/components/schemas/PharmacyDetailResponse'
+                required:
+                  - data
+              examples:
+                successExample:
+                  summary: Example of a successful response
+                  value:
+                    data:
+                      id: "67"
+                      type: "Pharmacy"
+                      attributes:
+                        extId: "106"
+                        name: "Prostějov, OC Kaufland, Olomoucká"
+                        locationType: "pharmacy"
+                        pageId: "50782"
+                        image:
+                          id: "1053"
+                          filename: "1_1053"
+                          extension: "jpg"
+                          name: "Prostějov, OC Kaufland, Olomoucká"
+                          description: null
+                          width: 2000
+                          height: 1500
+                        icon: null
+                        contact:
+                          email: "praha.occhodov@benu.cz"
+                          phone: "+420 111 123 321"
+                        warehouse:
+                          id: "30902"
+                          type: "store"
+                        deliveryMethod:
+                          id: "67"
+                          uid: "LEKARNA_30902"
+                          type: null
+                          description: null
+                          availabilityMessage: null
+                          note: null
+                        allowedReservation: true
+                        specialLabel: false
+                        openingHours:
+                          monday:
+                            dayOfWeek: 1
+                            openingHours: { from: "08:00", to: "20:00" }
+                            lunchBreak: null
+                            isClosed: true
+                        holidayOpening:
+                          - holiday: "open_newyear"
+                            date: "01.01.2025"
+                            isOpen: false
+                        openingHoursInfo: null
+                        address:
+                          street: "Olomoucká 4619/120"
+                          city: "Prostějov"
+                          postCode: "798 11"
+                          region: "Olomoucký"
+                        coordinate:
+                          lat: 49.483094
+                          lng: 17.123334
+                        paymentMethods:
+                          - uid: "PAY_CASH"
+                            name: "Hotově"
+                            isAccepted: true
+                            options: [ ]
+                        specializations:
+                          - id: "1"
+                            uid: "cat_bezbarier"
+                            name: "Bezbariérový přístup"
+                          - id: "3"
+                            uid: "cat_baby"
+                            name: "Měření cukru"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/pharmacies:
+    get:
+      summary: Retrieve a list of pharmacies
+      description: Get a paginated list of pharmacies based on different search criteria.
+      operationId: getPharmacies
+      tags:
+        - Pharmacies
+      parameters:
+        - name: findBy
+          in: query
+          description: The criteria to find pharmacies by.
+          required: false
+          schema:
+            type: string
+            enum: [position, geoLocation, nearPharmacy, address]
+            default: position
+        - name: lat
+          in: query
+          description: 'Latitude. Required when `findBy` is `geoLocation`.'
+          schema:
+            type: number
+            format: float
+            minimum: -90
+            maximum: 90
+        - name: lng
+          in: query
+          description: 'Longitude. Required when `findBy` is `geoLocation`.'
+          schema:
+            type: number
+            format: float
+            minimum: -180
+            maximum: 180
+        - name: pharmacyId
+          in: query
+          description: 'The ID of a pharmacy to find others nearby. Required when `findBy` is `nearPharmacy`.'
+          schema:
+            type: integer
+            minimum: 1
+        - name: address
+          in: query
+          description: 'A partial or full address to search for. Required when `findBy` is `address`.'
+          schema:
+            type: string
+            minLength: 3
+        - name: filter[allowsReservations]
+          in: query
+          description: Filter pharmacies that allow reservations.
+          schema:
+            type: boolean
+        - name: filter[includedLocationTypes]
+          in: query
+          required: false
+          description: >
+            Include locations that match one of the provided types.
+            This parameter can be repeated for multiple values, e.g.,
+            `...&filter[includedLocationTypes][]=pharmacy&filter[includedLocationTypes][]=box`.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [pharmacy, box]
+        - name: filter[excludedLocationTypes]
+          in: query
+          required: false
+          description: >
+            Exclude locations that match one of the provided types.
+            This parameter can be repeated for multiple values, e.g.,
+            `...&filter[excludedLocationTypes][]=box`.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [pharmacy, box]
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: A paginated list of pharmacies.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PharmacyListResponse'
+              examples:
+                successExample:
+                  summary: Example of a successful pharmacies response
+                  value:
+                    meta:
+                      totalPages: 2
+                      totalCount: 11
+                    data:
+                      - id: "67"
+                        type: "Pharmacy"
+                        attributes:
+                          extId: "106"
+                          name: "Prostějov, OC Kaufland, Olomoucká"
+                          distance: 49,26
+                          locationType: "pharmacy"
+                          pageId: "50782"
+                          image:
+                            id: "1053"
+                            filename: "1_1053"
+                            extension: "jpg"
+                            name: "Prostějov, OC Kaufland, Olomoucká"
+                            description: null
+                            width: 2000
+                            height: 1500
+                          icon: null
+                          contact:
+                            email: "praha.occhodov@benu.cz"
+                            phone: "+420 111 123 321"
+                          warehouse:
+                            id: "30902"
+                            type: "store"
+                          deliveryMethod:
+                            id: "67"
+                            uid: "LEKARNA_30902"
+                            type: null
+                            description: null
+                            availabilityMessage: null
+                            note: null
+                          allowedReservation: true
+                          specialLabel: false
+                          openingHours:
+                            monday:
+                              dayOfWeek: 1
+                              openingHours: { from: "08:00", to: "20:00" }
+                              lunchBreak: null
+                              isClosed: true
+                          holidayOpening:
+                            - holiday: "open_newyear"
+                              date: "01.01.2025"
+                              isOpen: false
+                          openingHoursInfo: null
+                          address:
+                            street: "Olomoucká 4619/120"
+                            city: "Prostějov"
+                            postCode: "798 11"
+                            region: "Olomoucký"
+                          coordinate:
+                            lat: 49.483094
+                            lng: 17.123334
+                          paymentMethods:
+                            - uid: "PAY_CASH"
+                              name: "Hotově"
+                              isAccepted: true
+                              options: []
+                          specializations:
+                            - id: "1"
+                              uid: "cat_bezbarier"
+                              name: "Bezbariérový přístup"
+                            - id: "3"
+                              uid: "cat_baby"
+                              name: "Měření cukru"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /v1/kiosk/provision:
+    post:
+      summary: Kiosik provisioning
+      description: Generates clientId and clientSecret for given kiosk, returning both and activating it.
+      operationId: postKioskProvision
+      tags:
+        - Kiosks
+      requestBody: 
+        $ref: '#/components/requestBodies/KioskProvisioningRequest'
+      responses:
+        '200':
+          description: Successfully provisioned kiosk.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/DataObjectResponse'
+                      - $ref: '#/components/schemas/KioskProvisioningResponse'
+              examples:
+                successExample:
+                  summary: Example of a successful response
+                  value:
+                    data:
+                      id: "serialnumber1234"
+                      type: "KioskProvisioningResponse"
+                      attributes:
+                        clientId: "ouatQLKn9wapG3tEtq2OYA"
+                        clientSecret: "_fDOcqSYK1k4ddsBZpqmPapX_vd5SZ4KvB3b0b7Vue8"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/delivery-dates:
+    get:
+      summary: Retrieve delivery dates
+      description: Get information about available delivery dates.
+      operationId: getDeliveryDates
+      tags:
+        - DeliveryDates
+      parameters:
+        - $ref: '#/components/parameters/ItemId'
+      responses:
+        '200':
+          description: Successful response with available delivery dates. Will return empty data if there are not any delivery dates available or if those are disabled.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DataCollectionResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/DeliveryDateResource'
+                    required:
+                      - data
+              examples:
+                successExample:
+                  summary: Example of a successful delivery dates response
+                  value:
+                    data:
+                      - id: "1"
+                        type: "DeliveryDate"
+                        attributes:
+                          deliveryMethodId: "1"
+                          deliveryMethodUid: "DEL_PERSONAL"
+                          deliveryMethodName: "Osobně v lékárně"
+                          deliveryMethodType: "personal_pickup"
+                          isPromoted: false
+                          priority: 0
+                          cutoffTime: "18:00"
+                          deliveryDate: "2025-05-10T18:00:00+02:00"
+                      - id: "10"
+                        type: "DeliveryDate"
+                        attributes:
+                          deliveryMethodId: "10"
+                          deliveryMethodUid: "DEL_PACKETA"
+                          deliveryMethodName: "Zásilkovna - doručení na adresu"
+                          deliveryMethodType: "carrier_delivery"
+                          isPromoted: true
+                          priority: 5
+                          cutoffTime: "16:00"
+                          deliveryDate: "2025-05-11T16:00:00+02:00"
+                      - id: "20"
+                        type: "DeliveryDate"
+                        attributes:
+                          deliveryMethodId: "20"
+                          deliveryMethodUid: null
+                          deliveryMethodName: "Osobní odběr v Zásilkovně"
+                          deliveryMethodType: "personal_pickup"
+                          isPromoted: true
+                          priority: 10
+                          cutoffTime: "16:00"
+                          deliveryDate: "2025-05-11T16:00:00+02:00"
+  /v1/baskets:
+    get:
+      summary: Retrieve or create new basket
+      operationId: getBasket
+      tags:
+        - Basket
+      security:
+        - BearerAuth: [ ]
+        - CookieAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/DataObjectResponse'
+                      - $ref: '#/components/schemas/BasketDetailResponse'
+              examples:
+                example-basket:
+                  value:
+                    data:
+                      id: "999"
+                      type: "Basket"
+                      attributes:
+                        hash: '1234SkcZ'
+                        price:
+                          totalPrice:
+                            value: 12
+                            valueWithoutVat: 10
+                            currency: Kč
+                          productsPrice:
+                            value: 12
+                            valueWithoutVat: 10
+                            currency: Kč
+                          ePrescription: null
+                        isEligibleForOTC: false
+        '400':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/feature-flags:
+    get:
+      summary: Get list of feature flags
+      description: Returns array of user activable feature flags.
+      operationId: getFeatureFlags
+      tags:
+        - FeatureFlags
+      responses:
+        '200':
+          description: Successful response with user activable feature flags.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DataCollectionResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/FeatureFlagResource'
+                    required:
+                      - data
+              examples:
+                successExample:
+                  summary: Example of a successful feature flags response
+                  value:
+                    data:
+                      - id: "delivery_dates"
+                        type: "FeatureFlag"
+                        attributes:
+                          value: true
+                      - id: "translator_raw_output"
+                        type: "FeatureFlag"
+                        attributes:
+                          value: false
+                      - id: "orders_scale"
+                        type: "FeatureFlag"
+                        attributes:
+                          value: 2.4
+                      - id: "box_size"
+                        type: "FeatureFlag"
+                        attributes:
+                          value: 'large'
+  /v1/customers/{customerCard}:
+    get:
+      summary: Get obfuscated customer data
+      description: Get obfuscated customer data based on customer card. *Requires kiosk Bearer authentication*.
+      operationId: getCustomerCardData
+      security:
+        - BearerAuth: [ ]
+      tags:
+        - Customer
+      parameters:
+        - $ref: '#/components/parameters/CustomerCard'
+      responses:
+        '200':
+          description: Successful response with obfuscated data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    oneOf:
+                      - allOf:
+                          - $ref: '#/components/schemas/DataObjectResponse'
+                          - $ref: '#/components/schemas/ObfuscatedCustomerCardDetailResponse'
+                    discriminator:
+                      propertyName: type
+                required:
+                  - data
+              examples:
+                successExample:
+                  summary: Example of a successful response
+                  value:
+                    data:
+                      id: "2200000969696"
+                      type: "ObfuscatedCustomerCardDetail"
+                      attributes:
+                        firstName: "Ra****n"
+                        lastName: "N***k"
+                        phone: "7** 7** 432"
+                        email: "t**t@benu.cz"
+                        consents:
+                          sendCommercialMessages: true
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/consultations:
+    post:
+      summary: Creates new consultation
+      description: Creates new consultation
+      operationId: postConsultations
+      tags:
+        - Consultations
+      requestBody: 
+        $ref: '#/components/requestBodies/ConsultationsCreateRequest'
+      responses:
+        '202':
+          description: Consultation created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/DataObjectResponse'
+                      - $ref: '#/components/schemas/ConsultationCreateResponse'
+              examples:
+                successExample:
+                  summary: Example of a successful response
+                  value:
+                    data:
+                      id: "20251020_094507"
+                      type: "ConsultationCreateResponse"
+                      attributes:
+                        category: "Drug contraindications"
+                        consultantType: "AskThePharmacistBot"
+                        messages:
+                          - content: '<h3 id="1-imunolak-kids-d3-zn-nimunolak-kids-d3-zn-je-dodatak-ishrani-namenjen-deci-starijoj-od-3-godine-koji-kombinuje-probiotike-vitamin-d3-i-cink-probiotski-sojevi-u-ovom-proizvodu-doprinose-smanjenju-simptoma-alergijskih-reakcija-kao-to-su-ekcem-atopijski-dermatitis-i-alergijski-rinitis-istovremeno-ja-aju-i-imuni-sistem-deteta-sadr-i-korisne-bakterije-lactobacilus-casei-bl-2401-lactobacilus-salivarius-bl-2201-i-bifidobacterium-breve-3406-n-n-2-bulardi-probiotik-junior-nbulardi-probiotik-junior-je-probiotski-proizvod-namenjen-deci-koji-sadr-i-pet-milijardi-probiotske-kulture-saccharomyces-boulardii-i-cink-efikasan-je-u-le-enju-svih-tipova-dijareje-ali-i-u-ja-anju-imuniteta-kod-dece-cink-dodatno-smanjuje-trajanje-i-te-inu-dijareje-a-proizvod-je-pogodan-i-za-decu-sa-alergijama-jer-doprinosi-regulaciji-crevne-flore-i-ja-anju-imunolo-kog-sistema-n-n-3-livsane-lactoactive-kids-nlivsane-lactoactive-kids-je-probiotski-dodatak-ishrani-namenjen-uspostavljanju-normalne-crevne-flore-kod-dece-sa-dijarejom-i-atopijskim-dermatitisom-ne-sadr-i-e-er-gluten-ni-laktozu-to-ga-ini-pogodnim-za-decu-sa-alergijama-i-intolerancijama-n-n-4-terranova-de-iji-probiotik-nterranova-de-iji-probiotik-sadr-i-tri-ispitana-probiotika-otporna-na-eluda-nu-kiselinu-i-koristi-se-za-podr-ku-gastrointestinalnom-zdravlju-respiratornim-infekcijama-i-atopijskom-dermatitisu-kod-dece-to-ga-ini-pogodnim-za-decu-sa-alergijama-n-n-5-probiotski-sojevi-uop-teno-nprobiotski-sojevi-kao-to-su-lactobacillus-rhamnosus-lgg-i-drugi-korisni-mikroorganizmi-imaju-zna-ajan-uticaj-na-smanjenje-simptoma-alergijskih-reakcija-i-pozitivno-deluju-na-inflamatorne-bolesti-creva-to-je-va-no-za-decu-sa-alergijama-n-n-n-novi-probiotici-su-posebno-formulirani-da-podr-e-imuni-sistem-i-smanje-alergijske-simptome-kod-dece-ine-i-ih-pogodnim-izborom-za-decu-sa-alergijama-n-nuvek-je-preporu-ljivo-konsultovati-se-sa-pedijatrom-pre-upotrebe-bilo-kog-dodatka-ishrani-kod-dece-sa-alergijama-">1. Imunolak Kids D3+Zn  \nImunolak Kids D3+Zn je dodatak ishrani namenjen deci starijoj od 3 godine, koji kombinuje probiotike, vitamin D3 i cink. Probiotski sojevi u ovom proizvodu doprinose smanjenju simptoma alergijskih reakcija kao što su ekcem, atopijski dermatitis i alergijski rinitis, istovremeno jačajući imuni sistem deteta. Sadrži korisne bakterije Lactobacilus Casei BL 2401, Lactobacilus Salivarius BL 2201 i Bifidobacterium Breve 3406.\n\n### 2. Bulardi Probiotik Junior  \nBulardi Probiotik Junior je probiotski proizvod namenjen deci, koji sadrži pet milijardi probiotske kulture Saccharomyces boulardii i cink. Efikasan je u lečenju svih tipova dijareje, ali i u jačanju imuniteta kod dece. Cink dodatno smanjuje trajanje i težinu dijareje, a proizvod je pogodan i za decu sa alergijama jer doprinosi regulaciji crevne flore i jačanju imunološkog sistema.\n\n### 3. LIVSANE Lactoactive Kids  \nLIVSANE Lactoactive Kids je probiotski dodatak ishrani namenjen uspostavljanju normalne crevne flore kod dece sa dijarejom i atopijskim dermatitisom. Ne sadrži šećer, gluten ni laktozu, što ga čini pogodnim za decu sa alergijama i intolerancijama.\n\n### 4. Terranova Dečiji probiotik  \nTerranova Dečiji probiotik sadrži tri ispitana probiotika otporna na želudačnu kiselinu i koristi se za podršku gastrointestinalnom zdravlju, respiratornim infekcijama i atopijskom dermatitisu kod dece, što ga čini pogodnim za decu sa alergijama.\n\n### 5. Probiotski sojevi uopšteno  \nProbiotski sojevi, kao što su Lactobacillus rhamnosus LGG i drugi korisni mikroorganizmi, imaju značajan uticaj na smanjenje simptoma alergijskih reakcija i pozitivno deluju na inflamatorne bolesti creva, što je važno za decu sa alergijama.\n\n---\n\nOvi probiotici su posebno formulirani da podrže imuni sistem i smanje alergijske simptome kod dece, čineći ih pogodnim izborom za decu sa alergijama.\n\nUvek je preporučljivo konsultovati se sa pedijatrom pre upotrebe bilo kog dodatka ishrani kod dece sa alergijama.</h3>'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /v1/consultations/{id}/rating:
+    post:
+      summary: Submit rating for consultation
+      operationId: postConsultationsRating
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      tags:
+        - Consultations
+      requestBody: 
+        $ref: '#/components/requestBodies/ConsultationsRatingRequest'
+      responses:
+        '202':
+          description: Rating accepted
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/consultations/{consultantType}/categories:
+    get:
+      summary: Retrieve a list of consultation categories
+      description: Get a paginated list of consultation categories for specific consultant type.
+      operationId: getConsultationCategories
+      tags:
+        - Consultations
+      parameters:
+        - $ref: '#/components/parameters/ConsultantType'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: A paginated list of consultation categories.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultationCategoriesListResponse'
+              examples:
+                successExample:
+                  summary: Example of a successful consultation categories response
+                  value:
+                    meta:
+                      totalPages: 2
+                      totalCount: 11
+                    data:
+                      - id: "1"
+                        type: "ConsultationCategory"
+                        attributes:
+                          title: "Dermokozmetika"
+                      - id: "2"
+                        type: "ConsultationCategory"
+                        attributes:
+                          title: "Mame, bebe i deca"
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Bearer authentication with JWT token."
+    CookieAuth:
+      type: apiKey
+      in: cookie
+      name: benu2015p74
+      description: |
+        Cookie-based authentication scheme.
+        **Deprecated**: Use Bearer Token authentication instead.
+  parameters:
+    PageNumber:
+      name: page[number]
+      in: query
+      description: The page number to retrieve.
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+    PageSize:
+      name: page[size]
+      in: query
+      description: The number of items per page.
+      schema:
+        type: integer
+        default: 10
+        minimum: 1
+        maximum: 50
+    Id:
+      name: id
+      in: path
+      schema:
+        type: string
+      required: true
+      description: Identifier from database
+    ConsultantType:
+      name: consultantType
+      in: path
+      schema:
+        type: string
+      required: true
+      description: Consultant type
+    PriceLevel:
+      name: priceLevel
+      in: query
+      description: Defines what price level to use
+      required: false
+      schema:
+        $ref: '#/components/schemas/PriceLevel'
+      examples:
+        normal:
+          summary: Normal Price
+          description: Normal price for products.
+          value: normal
+        loyalty:
+          summary: Loyalty Price
+          description: Loyalty price for users.
+          value: loyalty
+    ItemId:
+      name: itemId
+      in: query
+      description: Specifies response for given item
+      required: false
+      schema:
+        $ref: '#/components/schemas/ItemId'
+      examples:
+        id:
+          summary: Id
+          description: Id of an Item.
+          value: 60
+    OidcServiceProvider:
+      name: serviceProvider
+      in: path
+      required: true
+      description: The OIDC service provider.
+      schema:
+        type: string
+        enum:
+          - google
+      examples:
+        id:
+          summary: Google
+          description: Google OIDC provider.
+          value: google
+    CustomerCard:
+      name: customerCard
+      in: path
+      required: true
+      description: Customer card number.
+      schema:
+        type: string
+      examples:
+        card:
+          summary: Customer card
+          description: Customer card number.
+          value: 2200000969696
+  requestBodies:
+    KioskProvisioningRequest:
+      description: Kiosk provisioning request data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - KioskProvisioningRequest
+              attributes:
+                type: object
+                properties:
+                  serialNumber:
+                    type: string
+                    description: Client secret
+                    examples:
+                      - "serialnumber1234"
+                required:
+                  - serialNumber
+            required:
+              - attributes
+              - type
+          examples:
+            validBodyExample:
+              summary: Example of a valid body request
+              value:
+                data:
+                  type: "KioskProvisioningRequest"
+                  attributes:
+                    serialNumber: "ouatQLKn9wapG3tEtq2OYA"
+    ConsultationsCreateRequest:
+      description: Consultation create data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - ConsultationCreateRequest
+              attributes:
+                type: object
+                properties:
+                  question:
+                    type: string
+                    minLength: 1
+                    description: Question for consultation
+                    examples:
+                      - "How many probiotics are there?"
+                  category:
+                    type: [string, 'null']
+                    description: Consultation category
+                    examples:
+                      - "Drug contraindications"
+                  consultantType:
+                    $ref: '#/components/schemas/ConsultantType'
+                required:
+                  - consultantType
+                  - category
+            required:
+              - attributes
+              - type
+          examples:
+            questionWithoutCategory:
+              summary: Example of simple question without any category
+              value:
+                data:
+                  type: "ConsultationCreateRequest"
+                  attributes:
+                    category: null
+                    consultantType: AskThePharmacistBot
+                    question: "How many probiotics are there?"
+    ConsultationsRatingRequest:
+      description: Consultation rating data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - ConsultationsRatingRequest
+              attributes:
+                type: object
+                properties:
+                  consultantType:
+                    $ref: '#/components/schemas/ConsultantType'
+                  comment:
+                    type: [string, 'null']
+                    minLength: 1
+                    description: Rating comment
+                    examples:
+                      - "Nice consultation API"
+                  rating:
+                    type: integer
+                    minimum: 0
+                    maximum: 10
+                    description: Rating grade, 0 - lowest / 10 - highest
+                required:
+                  - consultantType
+                  - rating
+                  - comment
+            required:
+              - attributes
+              - type
+          examples:
+            ratingWithComment:
+              summary: Example of the bad rating
+              value:
+                data:
+                  type: "ConsultationsRatingRequest"
+                  attributes:
+                    consultantType: "AskThePharmacistBot"
+                    comment: "Bad API design"
+                    rating: 0
+    OidcTokenBody:
+      description: The ID Token provided by the OIDC provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - idToken
+            properties:
+              idToken:
+                type: string
+                description: The JWT ID token from the provider.
+                examples:
+                  idToken:
+                    summary: Id token
+                    description: The JWT ID token from the provider.
+                    value: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEyMzQ1Njc4OTAifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJzdWIiOiIxMjM0NTY3ODkwMTIzNDU2Nzg5MCIsImF1ZCI6ImNsaWVudF9pZCIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoxNTE2MjQyNjIyfQ.signature"
+  schemas:
+    ConsultationCategoriesListResponse:
+      type: object
+      description: Paginated response with category list
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+        data:
+          type: array
+          items:
+            type: object
+            allOf:
+              - $ref: '#/components/schemas/DataObjectResponse'
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    enum: [ConsultationCategory]
+                  attributes:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                        minLength: 1
+    ConsultationCreateResponse:
+      type: object
+      description: consultation create data
+      properties:
+        type:
+          type: string
+          enum:
+            - ConsultationCreateResponse
+        attributes:
+          $ref: '#/components/schemas/ConsultationDetail'
+      required:
+        - attributes
+        - type
+    ConsultationDetail:
+      type: object
+      description: Consultation data
+      required:
+        - category
+        - consultantType
+        - messages
+      properties:
+        category:
+          type: string
+        consultantType:
+          $ref: '#/components/schemas/ConsultantType'
+        messages:
+          type: array
+          items: 
+            $ref: '#/components/schemas/ConsultationMessage'
+    ConsultationMessage:
+      type: object
+      description: Consultation answer
+      required:
+        - content
+      properties:
+        content: 
+          type: string
+    ConsultantType:
+      type: string
+      enum:
+        - AskThePharmacistBot
+    BasketDetail:
+      type: object
+      properties:
+        hash:
+          type: string
+          examples:
+            - "f20fd679383c0b27ab2f74dc380a0ad5"
+        price:
+          type: object
+          properties:
+            totalPrice:
+              $ref: '#/components/schemas/Price'
+            productsPrice:
+              $ref: '#/components/schemas/Price'
+            ePrescription:
+              oneOf:
+                - $ref: '#/components/schemas/EPrescriptionPrice'
+                - type: 'null'
+        isEligibleForOTC:
+          type: boolean
+          examples:
+            - false
+    BasketDetailResponse:
+      type: object
+      description: Basket Detail data
+      properties:
+        type:
+          type: string
+          enum:
+            - Basket
+        attributes:
+          $ref: '#/components/schemas/BasketDetail'
+      required:
+        - attributes
+        - type
+    KioskProvisioningResponse:
+      type: object
+      description: Kiosk provisioning data
+      properties:
+        type:
+          type: string
+          enum:
+            - KioskProvisioningResponse
+        attributes:
+          $ref: '#/components/schemas/KioskProvisioning'
+      required:
+        - attributes
+        - type
+    Price:
+      type: object
+      properties:
+        value:
+          type: number
+          format: float
+          examples:
+            - 4153
+        valueWithoutVat:
+          type: number
+          format: float
+          examples:
+            - 3439.53
+        currency:
+          type: string
+          examples:
+            - "Kč"
+    EPrescriptionPrice:
+      type: object
+      properties:
+        insurancePayment:
+          $ref: '#/components/schemas/Price'
+        voucherProductsPrice:
+          $ref: '#/components/schemas/Price'
+    ProductDetail:
+      type: object
+      description: Detailed information about a product.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the product.
+          examples:
+            - "275314"
+        itemId:
+          type: [ 'string', 'null' ]
+          description: Internal item identifier.
+          examples:
+            - "5567"
+        status:
+          type: string
+          description: Indicates status of product.
+          enum:
+            - draft
+            - pre_order
+            - active
+            - ending
+            - archived
+          examples:
+            - draft
+            - active
+            - archived
+        name:
+          type: string
+          description: Product name.
+          examples:
+            - "ESSENTIALE 300MG tvrdé tobolky 90 - balení 2 ks"
+        title:
+          type: string
+          description: Product title.
+          examples:
+            - "ESSENTIALE 300MG tvrdé tobolky 90 - balení 2 ks"
+        alias:
+          type: string
+          description: Product alias for URLs.
+          examples:
+            - "essentiale-300mg-tvrde-tobolky-90-baleni-2-ks"
+        brand:
+          oneOf:
+            - $ref: '#/components/schemas/Brand'
+            - type: "null"
+        isErotic:
+          type: boolean
+          description: Indicates if the product is erotic.
+          examples:
+            - false
+        isOtc:
+          type: boolean
+          description: Indicates if the product is OTC. Availability information for over-the-counter sales.
+          examples:
+            - false
+        isPrescribableMedicalDevice:
+          type: boolean
+          description: Indicates if the product is prescribable medical device by Voucher.
+          examples:
+            - false
+        bundleQuantity:
+          type: integer
+          description: Determines the number of pieces in the bundle. 1 means it is not a bundle.
+          examples:
+            - 1
+        notForSaleSeparately:
+          type: boolean
+          description: Indicates if the product is not for sale separately, mostly gifts.
+          examples:
+            - false
+        isPersonalPickupAvailable:
+          type: boolean
+          description: Indicates if the product can be picked up at the pharmacy
+          examples:
+            - true
+        hasRecyclingFee:
+          type: boolean
+          description: Indicates whether a recycling fee must be paid for the product
+          examples:
+            - false
+        productCondition:
+          type: string
+          description: Indicates if the product is new or second quality.
+          enum:
+            - new
+            - used
+          examples:
+            - new
+            - used
+        images:
+          type: array
+          description: List of product images.
+          items:
+            $ref: '#/components/schemas/Image'
+          examples:
+            imageExample:
+                summary: Example of product images
+                value:
+                  - id: "210509"
+                    source: "internal"
+                    filename: "1_210509"
+                    extension: "jpg"
+                    title: "MUCONASAL PLUS nosní sprej 10ml"
+                    url: null
+        tags:
+          type: array
+          description: List of product tags.
+          items:
+            $ref: '#/components/schemas/Tag'
+          examples:
+            tagsExample:
+                summary: Example of product tags
+                value:
+                  - id: "new"
+                    type: "new"
+                    label: "Novinka"
+                  - id: "delivery"
+                    type: "delivery"
+                    label: "Doprava zdarma"
+        reviewSummary:
+          $ref: '#/components/schemas/Review'
+        availability:
+          $ref: '#/components/schemas/Availability'
+        price:
+          $ref: '#/components/schemas/ProductPrice'
+        bundles:
+          type: array
+          description: List of bundles packages for the product.
+          items:
+            $ref: '#/components/schemas/ProductBundle'
+          examples:
+            bundlesExample:
+                summary: Example of product bundles
+                value:
+                  - id: "275314"
+                    title: "Balíček produktů 1 ks"
+                    image:
+                      id: "217682"
+                      filename: "1_210509"
+                      extension: "jpg"
+                      title: "MUCONASAL PLUS nosní sprej 10ml"
+                    discount:
+                      value: 28.0
+                      valueWithoutVat: 21.4
+                      currency: "CZK"
+                    price:
+                      value: 359
+                      valueWithoutVat: 320.54
+                      currency: "CZK"
+                    unitPrice:
+                      price: 359
+                      unitText: "1 kus"
+                      currency: "CZK"
+        variants:
+          type: array
+          description: List of product variants.
+          items:
+            $ref: '#/components/schemas/Variant'
+          examples:
+            variantsExample:
+                summary: Example of product variants
+                value:
+                  - id: "275314"
+                    title: "PROSTAMOL UNO měkké tobolky 90"
+                    image:
+                      id: "217682"
+                      filename: "1_210509"
+                      extension: "jpg"
+                      title: "MUCONASAL PLUS nosní sprej 10ml"
+                    price:
+                      value: 659
+                      valueWithoutVat: 58.39
+                      currency: "CZK"
+                    unitPrice:
+                      price: 359
+                      unitText: "1 kus"
+                      currency: "CZK"
+        multiActions:
+          type: array
+          description: List of product multi actions.
+          items:
+            $ref: '#/components/schemas/MultiAction'
+          examples:
+            multiActionsExample:
+                summary: Example of product multi actions
+                value:
+                  - id: "275314"
+                    type: "regular"
+                    name: "Buy 4, get 1 for free"
+                    description: "Add <b>5 products of brand Alerid</b> to your cart, and the price of the cheapest will be deducted in the shopping cart."
+                    disclaimer: "Does not apply to second-quality products. Valid until 23.2.2025 or until stocks are exhausted."
+                    url: "null"
+                    gifts: "null"
+                  - id: "275314"
+                    type: "gift"
+                    name: "Buy 2 and get a gift"
+                    description: "Add selected products of brand <b>Ensure</b> to your cart with a <b>minimum value of 50Kč</b> and <b>receive a gift</b>."
+                    disclaimer: "Does not apply to second-quality products. Valid until 23.2.2025 or until stocks are exhausted."
+                    url: "https://benu.cz"
+                    gifts:
+                      - id: "275314"
+                        name: "Essentiale 300mg"
+                        alias: "essentiale-300mg-tvrde-tobolky-90-baleni-2-ks"
+                        quantity: 1
+                        image:
+                          id: "217682"
+                          filename: "1_210509"
+                          extension: "jpg"
+                          title: "MUCONASAL PLUS nosní sprej 10ml"
+        categories:
+          type: array
+          description: List of product categories.
+          items:
+            $ref: '#/components/schemas/ProductCategory'
+          examples:
+            categoryExample:
+                summary: Example of product categories
+                value:
+                  - id: "55529"
+                    name: "Léky na bolesti těla"
+                    alias: "leky-na-bolesti-tela"
+        banners:
+          type: array
+          description: List of product banners.
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ProductInformationBanner'
+              - $ref: '#/components/schemas/ProductMultiActionBanner'
+              - $ref: '#/components/schemas/ProductMultiActionWithGiftsBanner'
+          examples:
+            ProductInformationBanner:
+                summary: Example of product banner
+                value:
+                  - id: "279875"
+                    entity: "productInformationBanner"
+                    title: "Cashback up to 1000 Kč"
+                    description: "Get cash back with selected <b>Oral-B</b> products."
+                    disclaimer: "Does not apply to second-quality products. Valid until 23.2.2025 or until stocks are exhausted."
+                    url: "https://benu.cz"
+                    validRange:
+                      from: "2025-08-08T18:00:00+02:00"
+                      to: "2025-08-08T18:00:00+02:00"
+
+    Brand:
+      type: object
+      description: Information about the product's brand.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the brand.
+          examples:
+            - "58"
+        name:
+          type: string
+          description: Name of the brand.
+          examples:
+            - "ESSENTIALE"
+        alias:
+          type: string
+          description: URL-friendly alias of the brand.
+          examples:
+            - "essentiale"
+    ProductCategory:
+      type: object
+      description: Information about the product's category.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the category.
+          examples:
+            - "55528"
+        name:
+          type: string
+          description: Name of the category.
+          examples:
+            - "Léky na horečku"
+        alias:
+          type: string
+          description: URL-friendly alias of the category.
+          examples:
+            - "leky-na-horecku"
+    Image:
+      type: object
+      description: Information about an image.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the image.
+          examples:
+            - "210509"
+        source:
+          type: string
+          description: Source of image. Internal are provided with id and filename parameters and external are provided with url parameter.
+          enum:
+            - internal
+            - external
+          examples:
+            - "internal"
+        filename:
+          type: string
+          description: Unique filename of the image.
+          examples:
+            - "1_210509"
+        extension:
+          type: string
+          description: Original extension of the image.
+          examples:
+            - "jpg"
+        title:
+          type: ['string', 'null']
+          description: Title of the image.
+          examples:
+            - "MUCONASAL PLUS nosní sprej 10ml"
+        url:
+          type: [ 'string', 'null' ]
+          description: Url of external images.
+          examples:
+            - "/pharmdata.php?code=2733088"
+    Tag:
+      type: object
+      description: Information about a product tag.
+      properties:
+        id:
+          type: string
+          description: Identificator of the given tag
+          examples:
+            - "new"
+        type:
+          type: string
+          description: Type of the product tag, represented as an enum.
+          enum:
+            - tv
+            - delivery
+            - packager
+            - action
+            - loyalty-action
+            - new
+            - tip
+            - blackfriday
+            - recommend
+            - expiration
+            - gift
+            - sale
+            - clearance
+            - advantage-package
+            - loyalty
+          examples:
+            - "new"
+        label:
+          type: string
+          description: Label of the tag.
+          examples:
+            - "Novinka"
+    Review:
+      type: object
+      description: Summary of product reviews.
+      properties:
+        value:
+          type: integer
+          description: Average review score.
+          examples:
+            - 4
+        percentageValue:
+          type: integer
+          description: Percentage representation of the review score.
+          examples:
+            - 80
+        count:
+          type: integer
+          description: Number of reviews.
+          examples:
+            - 10
+    Availability:
+      type: object
+      description: Information about the product's availability.
+      properties:
+        isAvailable:
+          type: boolean
+          description: Indicates if the product is available.
+          examples:
+            - true
+        status:
+          type: string
+          description: Availability status.
+          enum:
+            - IN_STOCK
+            - NOT_IN_STOCK
+            - SUPPLIER_STOCK
+          examples:
+            - IN_STOCK
+            - NOT_IN_STOCK
+            - SUPPLIER_STOCK
+        pharmacyAvailabilityCount:
+          type: integer
+          description: Number of pharmacies with the product available.
+          examples:
+            - 15
+    ProductPrice:
+      type:
+        - object
+        - 'null'
+      description: Information about the product price.
+      properties:
+        price:
+          type: number
+          format: float
+          description: Product price including VAT.
+          examples:
+            - 149
+        rrpPrice:
+          type:
+            - number
+            - 'null'
+          format: float
+          description: Recommended retail price including VAT.
+          examples:
+            - 199
+        loyaltyPrice:
+          type:
+            - number
+            - 'null'
+          format: float
+          description: Loyalty price including VAT.
+          examples:
+            - 119
+        vat:
+          type: number
+          format: float
+          description: Value added tax.
+          examples:
+            - 21
+        showDiscount:
+          type: boolean
+          description: Determines the display of the sale price.
+          examples:
+            - true
+        discountPercent:
+          type: integer
+          description: Percentage discount.
+          examples:
+            - 5
+        currencyCode:
+          type: string
+          description: Currency code of the price.
+          examples:
+            - "CZK"
+        unitPrice:
+          type:
+            - object
+            - 'null'
+          description: Information about the unit price of the product.
+          properties:
+            price:
+              type: number
+              format: float
+              description: Unit price of the product.
+              examples:
+                - 149
+            unitText:
+              type: string
+              description: Description of the unit.
+              examples:
+                - "1 kus"
+        priceLevel:
+          type: string
+          description: Price level.
+          examples:
+            - "NORMAL"
+    SimplePrice:
+      type:
+        - object
+        - 'null'
+      description: Simple price object.
+      properties:
+        price:
+          type: number
+          format: float
+          description: Product price including VAT.
+          examples:
+            - 149
+        rrpPrice:
+          type:
+            - number
+            - 'null'
+          format: float
+          description: Recommended retail price including VAT.
+          examples:
+            - 199
+        showDiscount:
+          type: boolean
+          description: Determines the display of the sale price.
+          examples:
+            - true
+        discountPercent:
+          type: integer
+          description: Percentage discount.
+          examples:
+            - 5
+    ProductBundle:
+      type: object
+      description: Information about an bundle of the product.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the package.
+          examples:
+            - "275314"
+        name:
+          type: string
+          description: Name of the package.
+          examples:
+            - "Balíček produktů 1 ks"
+        alias:
+          type: string
+          description: Alias of the bundle
+          examples:
+            - "essentiale"
+        image:
+          oneOf:
+            - $ref: '#/components/schemas/Image'
+            - type: "null"
+        price:
+          $ref: '#/components/schemas/SimplePrice'
+        quantity:
+          type: integer
+          description: Determines the number of pieces in the bundle.
+          examples:
+            - 2
+    Variant:
+      type: object
+      description: Information about a product variant.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the variant.
+          examples:
+            - "275314"
+        name:
+          type: string
+          description: Name of the variant.
+          examples:
+            - "PROSTAMOL UNO měkké tobolky 90"
+        alias:
+          type: string
+          description: Alias of the variant
+          examples:
+            - "essentiale"
+        image:
+          oneOf:
+            - $ref: '#/components/schemas/Image'
+            - type: "null"
+        price:
+          $ref: '#/components/schemas/SimplePrice'
+        condition:
+          type: string
+          description: Indicates if the product is new or second quality.
+          enum:
+            - new
+            - used
+          examples:
+            - new
+            - used
+    MultiAction:
+      type: object
+      description: Information about a product multi action.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the multi action.
+          examples:
+            - "275314"
+        type:
+          type: string
+          enum:
+            - regular
+            - gift
+          description: Type of the multi action.
+          examples:
+            - "regular"
+            - "gift"
+        name:
+          type: string
+          description: Name of the multi action.
+          examples:
+            - "PROSTAMOL UNO měkké tobolky 90"
+        description:
+          type: string
+          description: Description text of the multi action. Contains HTML tags.
+          examples:
+            - "Add selected products of brand <b>Ensure</b> to your cart with a <b>minimum value of 50Kč</b> and <b>receive a gift</b>."
+        disclaimer:
+          type: ['string', 'null']
+          description: Disclaimer text of the multi action.
+          examples:
+            - "Does not apply to second-quality products. Valid until 23.1.2025 or until stocks are exhausted."
+        url:
+          type: ['string', 'null']
+          description: URL to details for the action.
+          examples:
+            - "https://benu.cz"
+        gifts:
+          oneOf:
+            - $ref: '#/components/schemas/ProductGift'
+            - type: "null"
+    ProductGift:
+      type: object
+      description: Information about gift item.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the gift item.
+          examples:
+            - "275314"
+        name:
+          type: string
+          description: Unique identifier of the gift item.
+          examples:
+            - "275314"
+        alias:
+          type: string
+          description: Gift alias for URLs.
+          examples:
+            - "essentiale-300mg-tvrde-tobolky-90-baleni-2-ks"
+        quantity:
+          type: integer
+          description: Gift quantity
+          examples:
+            - 1
+        image:
+          oneOf:
+            - $ref: '#/components/schemas/Image'
+            - type: "null"
+    ErrorSource:
+      title: Error source
+      description: "References to the primary source of the error."
+      type: object
+      properties:
+        pointer:
+          type: string
+          description: "JSON Pointer to the associated entity in the request document."
+        parameter:
+          type: string
+          description: "Indicates which query parameter caused the issue."
+        header:
+          type: string
+          description: "Indicates the name of a single request header which caused the error."
+      oneOf:
+        - required: [ pointer ]
+        - required: [ parameter ]
+        - required: [ header ]
+    ErrorResponse:
+      title: Error response
+      type: object
+      description: Error response
+      properties:
+        code:
+          type: string
+          description: "An application-specific error code, expressed as a string."
+          examples:
+            - "4006"
+        title:
+          type: string
+          description: "A short, human-readable summary of the problem."
+          examples:
+            - "Not found."
+        detail:
+          type: string
+          description: "A human-readable explanation specific to this occurrence of the problem."
+          examples:
+            - "Entity was not found."
+        status:
+          type: string
+          description: "The HTTP status code applicable to this problem, expressed as a string."
+          examples:
+            - "404"
+        source:
+          $ref: '#/components/schemas/ErrorSource'
+      required:
+        - code
+        - title
+        - detail
+    DataCollectionResponse:
+      type: object
+      description: Base structure for a response containing a collection of resources
+      properties:
+        data:
+          type: array
+          description: An array of resource objects.
+          items: {}
+      required:
+        - data
+    DataObjectResponse:
+      type: object
+      description: Object primary data
+      properties:
+        id:
+          type: [ 'string', 'null' ]
+          description: Unique identifier of the object
+        type:
+          type: string
+      required:
+        - id
+        - type
+      examples:
+        - objectExample:
+            id: '275314'
+            type: 'ProductDetail'
+    ObfuscatedCustomerCardDetailResponse:
+      type: object
+      description: Obfuscated customer card detail response
+      properties:
+        type:
+          type: string
+          enum:
+            - ObfuscatedCustomerCardDetail
+        attributes:
+          $ref: '#/components/schemas/ObfuscatedCustomerCardDetail'
+      required:
+        - attributes
+        - type
+    ProductDetailResponse:
+      type: object
+      description: Product Detail data
+      properties:
+        type:
+          type: string
+          enum:
+            - ProductDetail
+        attributes:
+          $ref: '#/components/schemas/ProductDetail'
+      required:
+        - attributes
+        - type
+    PharmacyDetailResponse:
+      type: object
+      description: Pharmacy Detail data
+      properties:
+        type:
+          type: string
+          enum:
+            - Pharmacy
+        attributes:
+          $ref: '#/components/schemas/PharmacyAttributes'
+      required:
+        - attributes
+        - type
+    PharmacyListResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PharmacyResource'
+      required:
+        - meta
+        - data
+    PaginationMeta:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+        totalCount:
+          type: integer
+    PharmacyResource:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/DataObjectResponse'
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [Pharmacy]
+            attributes:
+              $ref: '#/components/schemas/PharmacyAttributes'
+    PharmacyAttributes:
+      type: object
+      properties:
+        extId:
+          type: ['string', 'null']
+        name:
+          type: string
+        distance:
+          description: 'Distance in kilometers. Only for list of pharmacies.'
+          type: ['number', 'null']
+          format: float
+        locationType:
+          type: string
+          enum:
+            - pharmacy
+            - box
+        pageId:
+          type: ['string', 'null']
+        image:
+          $ref: '#/components/schemas/PharmacyImage'
+        icon:
+          $ref: '#/components/schemas/PharmacyImage'
+        warehouse:
+          $ref: '#/components/schemas/PharmacyWarehouse'
+        contact:
+          $ref: '#/components/schemas/PharmacyContact'
+        deliveryMethod:
+          $ref: '#/components/schemas/PharmacyDeliveryMethod'
+        allowedReservation:
+          type: boolean
+        specialLabel:
+          type: boolean
+        openingHours:
+          $ref: '#/components/schemas/PharmacyOpeningHours'
+        holidayOpening:
+          type: array
+          items:
+            $ref: '#/components/schemas/PharmacyHolidayOpening'
+        openingHoursInfo:
+          type: ['string', 'null']
+        address:
+          $ref: '#/components/schemas/PharmacyAddress'
+        coordinate:
+          $ref: '#/components/schemas/PharmacyCoordinate'
+        paymentMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PharmacyPaymentMethod'
+        specializations:
+          type: array
+          items:
+            $ref: '#/components/schemas/PharmacySpecialization'
+      required:
+        - extId
+        - name
+        - locationType
+        - pageId
+        - image
+        - icon
+        - warehouse
+        - contact
+        - deliveryMethod
+        - specialLabel
+        - allowedReservation
+        - holidayOpening
+        - openingHours
+        - openingHoursInfo
+        - address
+        - coordinate
+        - paymentMethods
+        - specializations
+    PharmacyImage:
+      type: ['object', 'null']
+      properties:
+        id:
+          type: string
+        filename:
+          type: ['string', 'null']
+        extension:
+          type: string
+        name:
+          type: ['string', 'null']
+        description:
+          type: ['string', 'null']
+        width:
+          type: ['integer', 'null']
+        height:
+          type: ['integer', 'null']
+    PharmacyWarehouse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+    PharmacyContact:
+      type: object
+      properties:
+        email:
+          type: ['string', 'null']
+        phone:
+          type: ['string', 'null']
+      required:
+        - email
+        - phone
+    PharmacyDeliveryMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        uid:
+          type: ['string', 'null']
+        type:
+          $ref: '#/components/schemas/PharmacyDeliveryMethodType'
+        description:
+          type: ['string', 'null']
+        availabilityMessage:
+          type: ['string', 'null']
+        note:
+          type: ['string', 'null']
+    PharmacyDeliveryMethodType:
+      type: ['string', 'null']
+      enum: [personal_pickup, carrier_delivery, null]
+    PharmacyOpeningHours:
+      type: object
+      description: A map of day names to their opening hours.
+      additionalProperties:
+        $ref: '#/components/schemas/PharmacyWorkDay'
+    PharmacyWorkDay:
+      type: object
+      properties:
+        dayOfWeek:
+          type: integer
+          description: ISO 8601 numeric representation of the day of the week, 1 (Monday) to 7 (Sunday).
+        openingHours:
+          $ref: '#/components/schemas/PharmacyWorkingHours'
+        lunchBreak:
+          $ref: '#/components/schemas/PharmacyWorkingHours'
+        isClosed:
+          type: boolean
+    PharmacyWorkingHours:
+      type: ['object', 'null']
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+    PharmacyHolidayOpening:
+      type: object
+      properties:
+        holiday:
+          type: string
+        isOpen:
+          type: boolean
+        date:
+          type: string
+          format: date
+    PharmacyAddress:
+      type: ['object', 'null']
+      properties:
+        street:
+          type: ['string', 'null']
+        city:
+          type: ['string', 'null']
+        postCode:
+          type: ['string', 'null']
+        region:
+          type: ['string', 'null']
+    PharmacyCoordinate:
+      type: ['object', 'null']
+      properties:
+        lat:
+          type: number
+          format: float
+        lng:
+          type: number
+          format: float
+    PharmacyPaymentMethod:
+      type: object
+      properties:
+        uid:
+          type: ['string', 'null']
+        name:
+          type: string
+        isAccepted:
+          type: boolean
+        options:
+          type: array
+          items:
+            type: ['string', 'null']
+    PharmacySpecialization:
+      type: object
+      properties:
+        id:
+          type: string
+        uid:
+          type: string
+        name:
+          type: ['string', 'null']
+      required:
+        - id
+        - uid
+        - name
+    PriceLevel:
+      type: string
+      examples:
+        - normal:
+            summary: Normal Price
+            value: NORMAL
+        - rrp:
+            summary: Recommended Retail Price
+            value: RRP
+        - loyalty:
+            ummary: Loyalty Price
+            value: UID_LOYALTY_PRICE
+    ItemId:
+      type: integer
+      description: ID of product item.
+      examples:
+        id:
+          summary: Id
+          description: Id of an Item.
+          value: 60
+    FavoriteProductCheckResult:
+      type: object
+      description: Information about result of check if product is in user favorite list.
+      properties:
+        isFavorite:
+          type: boolean
+          description: Result of check if product is in user favorite list.
+          examples:
+            - false
+            - true
+    Nonce:
+      type: object
+      description: Holds the nonce information.
+      properties:
+        nonce:
+          type: string
+          description: Nonce string.
+          examples:
+            - "DFuvFlakEYIs44Fza2KQ5ufwBAXo7VU6zUvDSzYzoUA"
+    ObfuscatedCustomerCardDetail:
+      type: object
+      description: Holds the obfuscated customer card detail information.
+      properties:
+        firstName:
+          type: string
+          description: Customer first name.
+          examples:
+            - "Ra****n"
+        lastName:
+          type: string
+          description: Customer last name.
+          examples:
+            - "S***a"
+        phone:
+          type: string
+          description: Customer phone.
+          examples:
+            - "7** 7** 432"
+        email:
+          type: string
+          description: Customer email.
+          examples:
+            - "t**t@benu.cz"
+        consents:
+          $ref: '#/components/schemas/CustomerCardConsents'
+      required:
+        - firstName
+        - lastName
+        - phone
+        - email
+        - consents
+    CustomerCardConsents:
+      type: object
+      description: Holds the customer card consents.
+      properties:
+        sendCommercialMessages:
+          type: boolean
+          description: Consent for sending commercial messages.
+          examples:
+            - true
+            - false
+      required:
+        - sendCommercialMessages
+    KioskProvisioning:
+      type: object
+      description: Holds the kiosk provisioning information.
+      properties:
+        clientId:
+          type: string
+          description: Client ID
+          examples:
+            - "ouatQLKn9wapG3tEtq2OYA"
+        clientSecret:
+          type: string
+          description: Client secret
+          examples:
+            - "_fDOcqSYK1k4ddsBZpqmPapX_vd5SZ4KvB3b0b7Vue8"
+      required:
+        - clientId
+        - clientSecret
+    FavoriteProductCheckResultResponse:
+      type: object
+      description: Favorite check result response
+      properties:
+        type:
+          type: string
+          enum:
+            - FavoriteProductCheckResult
+        attributes:
+          $ref: '#/components/schemas/FavoriteProductCheckResult'
+      required:
+        - attributes
+        - type
+    NonceResponse:
+      type: object
+      description: Nonce response
+      properties:
+        type:
+          type: string
+          enum:
+            - Nonce
+        attributes:
+          $ref: '#/components/schemas/Nonce'
+      required:
+        - attributes
+        - type
+    FeatureFlagResource:
+      type: object
+      description: Feature flag resource object.
+      allOf:
+        - $ref: '#/components/schemas/DataObjectResponse'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Unique identifier of the feature flag.
+            type:
+              type: string
+              enum:
+                - FeatureFlag
+            attributes:
+              $ref: '#/components/schemas/FeatureFlagAttributes'
+          required:
+            - id
+            - type
+            - attributes
+    FeatureFlagAttributes:
+      type: object
+      description: Attributes for a feature flag.
+      properties:
+        value:
+          type: ['string', 'number', 'boolean']
+          description: The scalar value of feature flag.
+          examples:
+            - true
+            - false
+            - 'value'
+            - '1'
+            - 1
+            - 14.28
+      required:
+        - value
+    DeliveryDateResource:
+      type: object
+      description: A delivery date resource object.
+      allOf:
+        - $ref: '#/components/schemas/DataObjectResponse'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Unique identifier of the delivery date resource.
+            type:
+              type: string
+              enum:
+                - DeliveryDate
+            attributes:
+              $ref: '#/components/schemas/DeliveryDateAttributes'
+          required:
+            - id
+            - type
+            - attributes
+    DeliveryDateAttributes:
+      type: object
+      description: Attributes for a delivery date.
+      properties:
+        deliveryMethodId:
+          type: string
+          description: Identifier of the delivery method.
+          examples:
+            - 1
+        deliveryMethodUid:
+          type: [ 'string', 'null' ]
+          description: UID of the delivery method.
+          examples:
+            - 'DEL_PERSONAL'
+            - null
+        deliveryMethodName:
+          type: string
+          description: Name of the delivery method.
+          examples:
+            - "Osobně v lékárně"
+            - "Osobní odběr v Zásilkovně"
+        deliveryMethodType:
+          type: [ 'string', 'null' ]
+          description: Type of the delivery method.
+          enum:
+            - personal_pickup
+            - carrier_delivery
+            - null
+          examples:
+            - personal_pickup
+            - carrier_delivery
+            - null
+        isPromoted:
+          type: boolean
+          description: Indicates if the delivery date is promoted.
+          examples:
+            - false
+            - true
+        priority:
+          type: integer
+          description: Priority of the delivery date promotion.
+          examples:
+            - 0
+            - 100
+        cutoffTime:
+          type: string
+          description: Cutoff time for the delivery (HH:MM format).
+          pattern: '^([01]\d|2[0-3]):([0-5]\d)$'
+          examples:
+            - "18:00"
+            - "16:00"
+        deliveryDate:
+          type: string
+          format: date-time
+          description: The specific delivery date and time. If pharmacy reservation is available, returns current datetime for pharmacies.
+          examples:
+            - "2025-05-10T18:00:00+02:00"
+      required:
+        - deliveryMethodId
+        - deliveryMethodUid
+        - deliveryMethodName
+        - deliveryMethodType
+        - isPromoted
+        - priority
+        - cutoffTime
+        - deliveryDate
+    ProductBanner:
+      type: object
+      description: Banner for product.
+      properties:
+        id:
+          type: string
+          description: Unique identifier (entity unique) of the product banner.
+          examples:
+            - "275314"
+        entity:
+          type: string
+          description: Entity of the banner.
+          examples:
+            - "productMultiActionBanner"
+            - "productMultiActionWithGiftBanner"
+            - "productInformationBanner"
+        title:
+          type: string
+          description: Name of the banner.
+          examples:
+            - "Cashback up to 1000 Kč"
+        description:
+          type: string
+          description: Description text of the banner. Contains HTML tags.
+          examples:
+            - "Get cash back with selected <b>Oral-B</b> products."
+        disclaimer:
+          type: [ 'string', 'null' ]
+          description: Disclaimer text of the banner.
+          examples:
+            - "Does not apply to second-quality products. Valid until 23.1.2025 or until stocks are exhausted."
+        url:
+          type: [ 'string', 'null' ]
+          description: URL to details for the information banner.
+          examples:
+            - "https://benu.cz"
+        validRange:
+          $ref: '#/components/schemas/ProductBannerValidRange'
+    ProductMultiActionWithGiftsBanner:
+      type: object
+      description: Banner for multi action with gifts.
+      allOf:
+        - $ref: '#/components/schemas/ProductBanner'
+      properties:
+        entity:
+          type: string
+          enum:
+            - "productMultiActionWithGiftBanner"
+        gifts:
+          oneOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/ProductGift'
+            - type: "null"
+    ProductMultiActionBanner:
+      type: object
+      description: Banner for regular multi action.
+      allOf:
+        - $ref: '#/components/schemas/ProductBanner'
+      properties:
+        entity:
+          type: string
+          enum:
+            - "productMultiActionBanner"
+    ProductInformationBanner:
+      type: object
+      description: Banner for information banner.
+      allOf:
+        - $ref: '#/components/schemas/ProductBanner'
+      properties:
+        entity:
+          type: string
+          enum:
+            - "productInformationBanner"
+    ProductBannerValidRange:
+      type: object
+      description: Valid date range of Product Banner.
+      properties:
+        from:
+          type: ['string', 'null']
+          format: date-time
+          description: Start validation date.
+          examples:
+            - "2025-05-10T18:00:00+02:00"
+        to:
+          type: ['string', 'null']
+          format: date-time
+          description: End validation date.
+          examples:
+            - "2025-05-10T18:00:00+02:00"
+  responses:
+    NotFound:
+      description: Not found response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            required:
+              - errors
+          examples:
+            not found:
+              value:
+                errors:
+                  - code: '4006'
+                    title: 'Product not found'
+                    detail: 'Product with id 60000 was not found.'
+                    source:
+                      parameter: 'id'
+    Conflict:
+      description: Conflict response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            required:
+              - errors
+          examples:
+            product conflict:
+              value:
+                errors:
+                  - code: '4044'
+                    title: 'Product is already favorite'
+                    detail: 'Product with id 60 is already in user favorites.'
+                    source:
+                      parameter: 'id'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            required:
+              - errors
+          examples:
+            Unauthorized:
+              value:
+                errors:
+                  - code: '4043'
+                    title: 'Authorization failed'
+                    detail: 'Identity was not provided.'
+    BadRequest:
+      description: Bad request response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            required:
+              - errors
+          examples:
+            product conflict:
+              value:
+                errors:
+                  - code: '4'
+                    title: 'Price level parameter is not valid'
+                    detail: 'Given price level parameter value is not allowed.'
+                    source:
+                      parameter: 'priceLevel'
+    InternalServerError:
+      description: Internal server error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            required:
+              - errors
+          examples:
+            internal error:
+              value:
+                errors:
+                  - code: '500'
+                    title: 'Internal Server Error'
+                    detail: 'An unexpected error occurred while processing the basket request.'
+tags:
+  - name: Products
+    description: Operations related to products
+  - name: DeliveryDates
+    description: Operations related to delivery dates
+  - name: Basket
+    description: Operations related to basket
+  - name: Authentication
+    description: Operations related to authentication
+  - name: FeatureFlags
+    description: Operations related to feature flags
+  - name: Customer
+    description: Operations related to customers
+  - name: Kiosks
+    description: Operations related to pharmacies
+  - name: Kiosks
+    description: Operations related to kiosks
+  - name: Consultations
+    description: Operations related to consultations
